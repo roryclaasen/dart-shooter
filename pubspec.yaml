@@ -5,8 +5,10 @@ environment:
   sdk: '>=1.0.0'
 
 dependencies:
+  dart_to_js_script_rewriter: "^1.0.1"
   browser: any
 
 transformers:
+- dart_to_js_script_rewriter
 - $dart2js:
     minify: true
