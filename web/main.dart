@@ -60,10 +60,10 @@ class GameHost {
   void _update(final double elapsed) {
     final double velocity = 128.0;
 
-    if (_keyboard.isPressed(KeyCode.LEFT)) _x -= velocity * elapsed;
-    if (_keyboard.isPressed(KeyCode.RIGHT)) _x += velocity * elapsed;
-    if (_keyboard.isPressed(KeyCode.UP)) _y -= velocity * elapsed;
-    if (_keyboard.isPressed(KeyCode.DOWN)) _y += velocity * elapsed;
+    if (_keyboard.isPressed(KeyCode.A)) _x -= velocity * elapsed;
+    if (_keyboard.isPressed(KeyCode.D)) _x += velocity * elapsed;
+    if (_keyboard.isPressed(KeyCode.W)) _y -= velocity * elapsed;
+    if (_keyboard.isPressed(KeyCode.S)) _y += velocity * elapsed;
   }
 
   void _render() {
@@ -78,7 +78,6 @@ class GameHost {
 
     context
       ..beginPath()
-      ..globalAlpha = 1
       ..fillStyle = "black"
       ..arc(_x, _y, _canvas.width / 32, 0, PI * 2.0)
       ..fill();

@@ -9,23 +9,25 @@
 	<title>Dart Shooter</title>
 	<style>
 	html, body {
-		background: rgb(20, 20, 20);
+		background: rgb(75, 75, 75);
 		margin: 0;
 	}
 	.game-container {
-		margin: 20px;
+		margin: 50px;
+		margin-bottom: 0;
 		text-align: center;
 	}
 	#game {
 		background: rgb(0, 0, 0);
-		width: 800px;
-		height: 600px;
+		-webkit-box-shadow: 0px 0px 25px 10px rgba(0,0,0,0.5);
+		-moz-box-shadow: 0px 0px 25px 10px rgba(0,0,0,0.5);
+		box-shadow: 0px 0px 25px 10px rgba(0,0,0,0.5);
 	}
 	</style>
 </head>
 <body>
 	<div class="game-container">
-		<canvas id="game"></canvas>
+		<canvas id="game" width="800px" height="600px"></canvas>
 	</div>
 	<script type="application/dart" src="main.dart"></script>
 </body>
