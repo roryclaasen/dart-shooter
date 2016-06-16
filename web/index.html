@@ -13,8 +13,7 @@
 		margin: 0;
 	}
 	.game-container {
-		margin: 50px;
-		margin-bottom: 0;
+		margin: 30px;
 		text-align: center;
 	}
 	#game {
@@ -23,11 +22,23 @@
 		-moz-box-shadow: 0px 0px 25px 10px rgba(0,0,0,0.5);
 		box-shadow: 0px 0px 25px 10px rgba(0,0,0,0.5);
 	}
+	footer {
+		color: white;
+		font-family: Sans-Serif;
+		margin: 10px;
+	}
+	footer a {
+		color: white;
+		font-weight: bold;
+	}
 	</style>
 </head>
 <body>
 	<div class="game-container">
 		<canvas id="game" width="800px" height="600px"></canvas>
 	</div>
-	<script type="application/dart" src="main.dart"></script>
+	<footer>
+		A Game by <a href="roryclaasen.me">Rory Claasen</a>. Source code on <a href="https://github.com/GOGO98901/dart-shooter">github</a>.
+		<script type="application/dart" src="main.dart"></script>
+	</footer>
 </body>
