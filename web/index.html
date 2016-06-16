@@ -7,15 +7,18 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="icon" type="image/png" href="assets/player.png" />
 
-	<title>Dart Shooter</title>
+	<title>Dart Shooter - Rory Claasen</title>
 	<style>
 	html, body {
 		background: rgb(75, 75, 75);
 		margin: 0;
+		text-align: center;
+		color: white;
+		font-family: Sans-Serif;
 	}
 	.game-container {
 		margin: 30px;
-		text-align: center;
+		min-width: 400px;
 	}
 	#game {
 		background: rgb(255, 255, 255);
@@ -24,13 +27,15 @@
 		box-shadow: 0px 0px 25px 10px rgba(0,0,0,0.5);
 	}
 	footer {
-		color: white;
-		font-family: Sans-Serif;
 		margin: 10px;
 	}
-	footer a {
+	a {
 		color: white;
 		font-weight: bold;
+		text-decoration: none;
+	}
+	a:hover {
+		text-decoration: underline;
 	}
 	</style>
 </head>
@@ -38,8 +43,13 @@
 	<div class="game-container">
 		<canvas id="game" width="400px" height="600px"></canvas>
 	</div>
+	<p>
+		<h3>Please be aweare that this game is not finished and is still a work in progress.<br>Some functionality is not yet available</h3>
+		Controls: Use <b>WSAD</b> to move and <b>SPACE</b> to shoot.
+	</p>
 	<footer>
-		A Game by <a href="http://roryclaasen.me">Rory Claasen</a>. Source code on <a href="https://github.com/GOGO98901/dart-shooter">github</a>.
-		<script type="application/dart" src="main.dart"></script>
+		A Game by <a href="http://roryclaasen.me">Rory Claasen</a>.
+		Source code available on <a href="https://github.com/GOGO98901/dart-shooter">github</a>.
 	</footer>
+	<script type="application/dart" src="main.dart"></script>
 </body>
