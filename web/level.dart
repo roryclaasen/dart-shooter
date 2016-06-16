@@ -6,8 +6,7 @@ class Level {
 
 	Level(this.canvas, Keyboard _keyboard) {
 		player = new Player(_keyboard);
-		player.x = (canvas.width / 2) + (player.width / 2);
-      print(player.x);
+		player.x = (canvas.width / 2) - (player.width / 2);
 		player.y = (canvas.height - player.height) - 50.0;
 	}
 

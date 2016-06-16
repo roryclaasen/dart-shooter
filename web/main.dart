@@ -5,6 +5,7 @@ import 'dart:async';
 import 'dart:collection';
 
 part 'control.dart';
+part 'texture.dart';
 part 'entity.dart';
 part 'level.dart';
 part 'game.dart';

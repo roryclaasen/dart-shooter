@@ -3,31 +3,22 @@ part of shooter;
 final double velocity = 128.0;
 
 class Entity {
-	ImageElement image;
+	Texture texture;
+	AnimatedTexture animTexture;
 	double x, y;
 	int width, height;
 
-	Entity(this.x, this.y, String texture) {
-		image = new ImageElement(src: 'assets/' + texture);
+	Entity(this.x, this.y, String texturePath) {
+		texture = new Texture(texturePath);
 		width = 32;
 		height = 32;
 	}
 
 	void render(CanvasRenderingContext2D context) {
-		if (image != null) {
-			context.drawImage(image, getBounds().left, getBounds().top);
-		}
+		if (texture != null) context.drawImage(texture.getTexture(), getBounds().left, getBounds().top);
 	}
 
 	void update(final CanvasElement canvas, final double elapsed) {}
-
-	void setTexture(String texture) {
-		this.image = new ImageElement(src: 'assets/' + texture);
-	}
-
-	void setImageElement(ImageElement image) {
-		this.image = image;
-	}
 
 	Rectangle getBounds() {
 		return new Rectangle(x, y, width, height);
