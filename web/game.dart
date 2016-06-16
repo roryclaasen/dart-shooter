@@ -8,9 +8,8 @@ class GameHost {
    Level level;
 
    GameHost(this._canvas, this._context){
-      level = new Level(_keyboard);
+      level = new Level(_canvas, _keyboard);
    }
-
 
    run() {
       window.requestAnimationFrame(_gameLoop);
@@ -41,7 +40,7 @@ class GameHost {
    void _render() {
       _context
       ..globalAlpha = 1
-      ..fillStyle = "white"
+      ..fillStyle = "black"
       ..beginPath()
       ..rect(0, 0, _canvas.width, _canvas.height)
       ..fill();

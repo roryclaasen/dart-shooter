@@ -1,21 +1,25 @@
 part of shooter;
 
+final double velocity = 128.0;
+
 class Entity {
-	final double velocity = 128.0;
 	ImageElement image;
 	double x, y;
+	int width, height;
 
 	Entity(this.x, this.y, String texture) {
 		image = new ImageElement(src: 'assets/' + texture);
+		width = 32;
+		height = 32;
 	}
 
 	void render(CanvasRenderingContext2D context) {
-		if(image != null) {
-			context.drawImage(image, x, y);
+		if (image != null) {
+			context.drawImage(image, getBounds().left, getBounds().top);
 		}
 	}
 
-	void update(final double elapsed) {}
+	void update(final CanvasElement canvas, final double elapsed) {}
 
 	void setTexture(String texture) {
 		this.image = new ImageElement(src: 'assets/' + texture);
@@ -25,24 +29,8 @@ class Entity {
 		this.image = image;
 	}
 
-	ImageElement getImageElement(){
-		return image;
-	}
-
-	double getX() {
-		return x;
-	}
-
-	double getY() {
-		return y;
-	}
-
-	void setX(double x){
-		this.x = x;
-	}
-
-	void setY(double y){
-		this.y = y;
+	Rectangle getBounds() {
+		return new Rectangle(x, y, width, height);
 	}
 }
 
@@ -52,10 +40,14 @@ class Player extends Entity {
 		_keyboard = keyboard;
 	}
 
-	void update(final double elapsed){
+	void update(final CanvasElement canvas, final double elapsed){
 		if (_keyboard.isPressed(KeyCode.A)) x -= velocity * elapsed;
 		if (_keyboard.isPressed(KeyCode.D)) x += velocity * elapsed;
 		if (_keyboard.isPressed(KeyCode.W)) y -= velocity * elapsed;
 		if (_keyboard.isPressed(KeyCode.S)) y += velocity * elapsed;
+		if (getBounds().left < 0) x = 0.0;
+		if (getBounds().right > canvas.width) x = 0.0 + canvas.width - width;
+		if (getBounds().top < 0) y = 0.0;
+		if (getBounds().bottom > canvas.height) y = canvas.height - height + 0.0;
 	}
 }
