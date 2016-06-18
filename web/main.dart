@@ -1,10 +1,14 @@
 library shooter;
 
+// Imports
 import 'dart:html';
 import 'dart:async';
 import 'dart:collection';
+import 'dart:convert';
+import 'package:json_object/json_object.dart';
 
-part 'control.dart';
+// Game Files
+part 'toolbox.dart';
 part 'texture.dart';
 part 'entity.dart';
 part 'level.dart';

@@ -6,8 +6,7 @@ class Level {
 
 	Level(this.canvas, Keyboard _keyboard) {
 		player = new Player(_keyboard);
-		player.x = (canvas.width / 2) - (player.width / 2);
-		player.y = (canvas.height - player.height) - 50.0;
+      player.setPosition(new Point((canvas.width / 2) - (player.getWidth() / 2), (canvas.height - player.getHeight()) - 50.0));
 	}
 
 	void render(CanvasRenderingContext2D context) {

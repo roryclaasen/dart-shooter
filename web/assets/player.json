@@ -1,0 +1,6 @@
+{
+	"texture": {
+		"files": ["figter_0.png", "figter_1.png", "figter_2.png", "figter_3.png"],
+		"interval": 5
+	}
+}
