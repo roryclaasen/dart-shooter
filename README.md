@@ -1,5 +1,5 @@
-
-# [![Dart-shooter](web/assets/player.png)](http://roryclaasen.me/dart-shooter) Dart Shooter
+[![Dart-shooter](web/assets/player.png)](http://roryclaasen.me/dart-shooter)
+# Dart Shooter
 A simple dart game
 
 [![Travis](https://img.shields.io/travis/GOGO98901/dart-shooter.svg?style=flat-square)](https://travis-ci.org/GOGO98901/dart-shooter/branches)
