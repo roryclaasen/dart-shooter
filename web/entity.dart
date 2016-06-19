@@ -9,10 +9,12 @@ class Entity {
 	int _width, _height;
 	int _health;
 
-	Entity(this._x, this._y, {String texturePath}) {
+	Entity(this._x, this._y, {String texturePath, int width, int height}) {
 		if (texturePath != null) _texture = new Texture(texturePath);
-		_width = 32;
-		_height = 32;
+		if (width == null) _width = 32;
+		else _width = width;
+		if (height == null) _height = 32;
+		else _height = height;
 	}
 
 	void loadData(String josnFile) {
@@ -22,6 +24,8 @@ class Entity {
 			List files = texture.files;
 			if (files.length > 1) {
 				_animTexture = new AnimatedTexture(texture.interval, files);
+			} else {
+				_texture = new Texture(files[0]);
 			}
 		}
 		if (req.hasKey("entity")) {
@@ -33,7 +37,7 @@ class Entity {
 	}
 
 	void render(CanvasRenderingContext2D context) {
-		if (_texture != null) context.drawImage(_texture.getTexture(), getBounds().left, getBounds().top);
+		if (_texture != null) context.drawImageScaled(_texture.getTexture(), getBounds().left, getBounds().top,getBounds().width,getBounds().height);
 	}
 
 	void update(final CanvasElement canvas, final double elapsed) {
@@ -79,7 +83,7 @@ class Entity {
 
 class Player extends Entity {
 	Keyboard _keyboard;
-	Player(Keyboard keyboard) : super(0.0, 0.0){
+	Player(Keyboard keyboard) : super(0.0, 0.0, width: 79, height: 55){
 		_keyboard = keyboard;
 		loadData("player.json");
 	}

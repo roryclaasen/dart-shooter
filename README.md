@@ -1,3 +1,4 @@
+[![Dart-shooter](assets/player.png)](http://roryclaasen.me/dart-shooter)
 # Dart Shooter
 A simple dart game
 
@@ -11,3 +12,5 @@ Please note that it is still a work in progress
 ## Credits
 #### Squares by [Jovanny Lemonad](http://www.dafont.com/jovanny-lemonad.d1907)
 [dafont](http://www.dafont.com/squares2.font)
+
+#### Textures by [Kenney](http://www.kenney.nl/)

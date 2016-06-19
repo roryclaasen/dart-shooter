@@ -7,7 +7,11 @@ class GameHost {
    static final Keyboard _keyboard = new Keyboard();
    Level level;
 
-   GameHost(this._canvas, this._context){
+   Texture _background;
+   int _backgroundPos = 0;
+
+   GameHost(this._canvas, this._context) {
+      _background = new Texture("background.png");
       level = new Level(_canvas, _keyboard);
    }
 
@@ -38,13 +42,18 @@ class GameHost {
    }
 
    void _render() {
-      _context
-      ..globalAlpha = 1
-      ..fillStyle = "black"
-      ..beginPath()
-      ..rect(0, 0, _canvas.width, _canvas.height)
-      ..fill();
-
+      _drawBackground();
       level.render(_context);
+   }
+
+   void _drawBackground() {
+      ImageElement image = _background.getTexture();
+      _backgroundPos++;
+      if (_backgroundPos >= 0) _backgroundPos = -image.height;
+      for(int x = 0; x < 2; x++) {
+         for(int y = 0; y < 5; y++) {
+            _context.drawImage(_background.getTexture(), x * image.width, (y * image.height) + _backgroundPos);
+         }
+      }
    }
 }
