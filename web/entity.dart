@@ -97,7 +97,7 @@ class Player extends Entity {
 		if (_keyboard.isPressed(KeyCode.S)) _y += velocity * elapsed;
 		if (getBounds().left < 0) _x = 0.0;
 		if (getBounds().right > canvas.width) _x = 0.0 + canvas.width - _width;
-		if (getBounds().top < 0) _y = 0.0;
+		if (getBounds().top < 40) _y = 40.0; // To not get to0 close to the text at the top
 		if (getBounds().bottom > canvas.height) _y = canvas.height - _height + 0.0;
 	}
 }
