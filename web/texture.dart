@@ -25,7 +25,7 @@ class AnimatedTexture {
 
 	AnimatedTexture(int interval, List files) {
 		_list = new List();
-		_interval = interval / 1000;
+		_interval = (interval / 1000).round();
 		for (int i = 0; i < files.length; i++){
 			_list.add(new Texture(files[i]));
 		}

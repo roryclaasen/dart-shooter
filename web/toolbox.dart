@@ -84,7 +84,7 @@ class TextUtil {
 
    void drawStringFloatRight(CanvasRenderingContext2D context, String text, int x, int y) {
       _initContext(context);
-      drawString(context, text, x - context.measureText(text).width, y);
+      drawString(context, text, (x - context.measureText(text).width).round(), y);
    }
 
    void wrapText(context, text, x, y, maxWidth, lineHeight) {
