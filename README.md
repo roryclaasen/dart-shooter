@@ -1,4 +1,4 @@
-[![Dart-shooter](assets/player.png)](http://roryclaasen.me/dart-shooter)
+[![Dart-shooter](web/assets/player.png)](http://roryclaasen.me/dart-shooter)
 # Dart Shooter
 A simple dart game
 
