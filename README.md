@@ -9,5 +9,5 @@ Play the game on [my website](http://roryclaasen.me/dart-shooter).<br>
 Please note that it is still a work in progress
 
 ## Credits
-#### Rainfall by [Yosuke Masaki](http://yosukemasaki.com/)
-[dafont](http://www.dafont.com/rainfall.font)
+#### Squares by [Jovanny Lemonad](http://www.dafont.com/jovanny-lemonad.d1907)
+[dafont](http://www.dafont.com/squares2.font)

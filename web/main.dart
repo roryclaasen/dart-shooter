@@ -4,7 +4,6 @@ library shooter;
 import 'dart:html';
 import 'dart:async';
 import 'dart:collection';
-import 'dart:convert';
 import 'package:json_object/json_object.dart';
 
 // Game Files
