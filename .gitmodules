@@ -1,0 +1,3 @@
+[submodule "web/dart-logos"]
+	path = web/dart-logos
+	url = https://github.com/dart-lang/logos

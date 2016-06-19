@@ -7,3 +7,7 @@ A simple dart game
 
 Play the game on [my website](http://roryclaasen.me/dart-shooter).<br>
 Please note that it is still a work in progress
+
+## Credits
+#### Rainfall by [Yosuke Masaki](http://yosukemasaki.com/)
+[dafont](http://www.dafont.com/rainfall.font)

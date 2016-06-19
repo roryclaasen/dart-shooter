@@ -5,12 +5,12 @@ final double velocity = 128.0;
 class Entity {
 	Texture _texture;
 	AnimatedTexture _animTexture;
-	double _x, _y;
+	double _x = 0.0, _y = 0.0;
 	int _width, _height;
 	int _health;
 
-	Entity(this._x, this._y, String texturePath) {
-		_texture = new Texture(texturePath);
+	Entity(this._x, this._y, {String texturePath}) {
+		if (texturePath != null) _texture = new Texture(texturePath);
 		_width = 32;
 		_height = 32;
 	}
@@ -23,6 +23,12 @@ class Entity {
 			if (files.length > 1) {
 				_animTexture = new AnimatedTexture(texture.interval, files);
 			}
+		}
+		if (req.hasKey("entity")) {
+			JsonObject entity = req.get("entity");
+
+			if(entity.containsKey("health")) _health = entity.health;
+			else _health = 1;
 		}
 	}
 
@@ -65,11 +71,15 @@ class Entity {
 	Point getPosition() {
 		return new Point(_x, _y);
 	}
+
+	int getHealth() {
+		return _health;
+	}
 }
 
 class Player extends Entity {
 	Keyboard _keyboard;
-	Player(Keyboard keyboard) : super(0.0, 0.0, "player.png"){
+	Player(Keyboard keyboard) : super(0.0, 0.0){
 		_keyboard = keyboard;
 		loadData("player.json");
 	}
