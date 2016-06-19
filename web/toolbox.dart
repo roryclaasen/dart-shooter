@@ -39,4 +39,8 @@ class JSONRequest {
       print("No key '" + key + "' found in file '"+ _file + "'");
       return null;
    }
+
+   bool hasKey(String key){
+      return _jsonObject.containsKey(key);
+   }
 }

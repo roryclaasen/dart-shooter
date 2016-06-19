@@ -17,14 +17,25 @@ class Entity {
 
 	void loadData(String josnFile) {
 		JSONRequest req = new JSONRequest("player.json");
-		print(req.get("texture"));
+		if (req.hasKey("texture")) {
+			JsonObject texture = req.get("texture");
+			List files = texture.files;
+			if (files.length > 1) {
+				_animTexture = new AnimatedTexture(texture.interval, files);
+			}
+		}
 	}
 
 	void render(CanvasRenderingContext2D context) {
 		if (_texture != null) context.drawImage(_texture.getTexture(), getBounds().left, getBounds().top);
 	}
 
-	void update(final CanvasElement canvas, final double elapsed) {}
+	void update(final CanvasElement canvas, final double elapsed) {
+		if (_animTexture != null) {
+			_animTexture.update(elapsed);
+			_texture = _animTexture.getCurrent();
+		}
+	}
 
 	Rectangle getBounds() {
 		return new Rectangle(_x, _y, _width, _height);
@@ -63,7 +74,9 @@ class Player extends Entity {
 		loadData("player.json");
 	}
 
-	void update(final CanvasElement canvas, final double elapsed){
+	void update(final CanvasElement canvas, final double elapsed) {
+		super.update(canvas, elapsed);
+
 		if (_keyboard.isPressed(KeyCode.A)) _x -= velocity * elapsed;
 		if (_keyboard.isPressed(KeyCode.D)) _x += velocity * elapsed;
 		if (_keyboard.isPressed(KeyCode.W)) _y -= velocity * elapsed;

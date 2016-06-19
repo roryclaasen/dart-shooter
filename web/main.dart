@@ -15,7 +15,7 @@ part 'level.dart';
 part 'game.dart';
 
 void main() {
-  final CanvasElement canvas = querySelector("#game");
-  canvas.focus();
-  scheduleMicrotask(new GameHost(canvas, canvas.getContext('2d')).run);
+   final CanvasElement canvas = querySelector("#game");
+   canvas.focus();
+   scheduleMicrotask(new GameHost(canvas, canvas.getContext('2d')).run);
 }
