@@ -10,6 +10,8 @@ class Entity {
 	double _x = 0.0, _y = 0.0;
 	int _width, _height;
 	int _health;
+	int _shadowOffset = 5;
+	double _scale = 1.0;
 
 	Entity(this._x, this._y, {String texturePath, int width, int height}) {
 		if (texturePath != null) _texture = new Texture(texturePath);
@@ -20,15 +22,20 @@ class Entity {
 	}
 
 	void loadData(String josnFile) {
-		JSONRequest req = new JSONRequest("player.json");
+		JSONRequest req = new JSONRequest(josnFile);
 		if (req.hasKey("texture")) {
 			JsonObject texture = req.get("texture");
 			List files = texture.files;
 			if (files.length > 1) {
-				_animTexture = new AnimatedTexture(texture.interval, files);
+				if (texture.containsKey("random")) {
+					if (texture.random) _texture = new Texture(files[random.nextInt(files.length)]);
+					else _animTexture = new AnimatedTexture(texture.interval, files);
+				} else _animTexture = new AnimatedTexture(texture.interval, files);
 			} else {
 				_texture = new Texture(files[0]);
 			}
+			if(texture.containsKey("shadow")) _shadowOffset = texture.shadow;
+			if(texture.containsKey("scale")) _scale = texture.scale;
 		}
 		if (req.hasKey("entity")) {
 			JsonObject entity = req.get("entity");
@@ -36,10 +43,27 @@ class Entity {
 			if(entity.containsKey("health")) _health = entity.health;
 			else _health = 1;
 		}
+
+		if (_texture != null) {
+			_texture.getTexture().onLoad.listen((e) {
+				_width = _texture.getTexture().width;
+				_height = _texture.getTexture().height;
+			});
+		}
 	}
 
 	void render(CanvasRenderingContext2D context) {
-		if (_texture != null) context.drawImageScaled(_texture.getTexture(), getBounds().left, getBounds().top,getBounds().width,getBounds().height);
+		if (_texture != null) {
+			context..shadowOffsetX = 0
+			..shadowOffsetY = _shadowOffset
+			..shadowBlur = _shadowOffset / 2
+			..shadowColor = 'rgba(0, 0, 0,  0.5)';
+			context.drawImageScaled(_texture.getTexture(), getBounds().left, getBounds().top,getBounds().width,getBounds().height);
+			context..shadowOffsetX = 0
+			..shadowOffsetY = 0
+			..shadowBlur = 0
+			..shadowColor = 'rgba(255, 255, 255,  1)';
+		}
 	}
 
 	void update(final double elapsed) {
@@ -50,7 +74,7 @@ class Entity {
 	}
 
 	Rectangle getBounds() {
-		return new Rectangle(_x, _y, _width, _height);
+		return new Rectangle(_x, _y, _width * _scale, _height * _scale);
 	}
 
 	void setWidth(int width) {
@@ -98,7 +122,7 @@ class Player extends Entity {
 		if (Keyboard.isPressed(KeyCode.S)) _y += pVelocity * elapsed;
 		if (getBounds().left < 0) _x = 0.0;
 		if (getBounds().right > GameHost.width) _x = 0.0 + GameHost.width - _width;
-		if (getBounds().top < 40) _y = 40.0; // To not get to0 close to the text at the top
+		if (getBounds().top < 40) _y = 40.0; // To not get to close to the text at the top
 		if (getBounds().bottom > GameHost.height) _y = GameHost.height - _height + 0.0;
 	}
 
@@ -121,12 +145,14 @@ class Enemy extends Entity {
 
 	Enemy(this._type) : super(0.0, 0.0) {
 		loadData("${_type}.json");
-		randomPosition(-10);
+		randomPosition(-100.0);
 	}
 
-	void randomPosition(int y) {
+	void randomPosition(double y) {
 		int width = GameHost.width;
 		_x = 0.0 + random.nextInt(width);
+		if (y == null) y = 0.0;
+		_y = y;
 	}
 
 	void remove() {
@@ -135,5 +161,16 @@ class Enemy extends Entity {
 
 	bool isRemoved() {
 		return _remove;
+	}
+}
+
+class Meteor extends Enemy {
+	Meteor() : super("meteor") {
+
+	}
+
+	void update(final double elapsed) {
+		super.update(elapsed);
+		_y += elapsed * velocity;
 	}
 }

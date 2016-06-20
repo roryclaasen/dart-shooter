@@ -33,6 +33,10 @@ class JSONRequest {
    }
 
    Object get(String key) {
+      if (_jsonObject == null) {
+         print("file '"+ _file + "' has not yet been loaded");
+         return null;
+      }
       if (_jsonObject.containsKey(key)) {
          return _jsonObject[key];
       }
@@ -40,7 +44,11 @@ class JSONRequest {
       return null;
    }
 
-   bool hasKey(String key){
+   bool hasKey(String key) {
+      if (_jsonObject == null) {
+         print("file '"+ _file + "' has not yet been loaded");
+         return false;
+      }
       return _jsonObject.containsKey(key);
    }
 }
@@ -112,7 +120,7 @@ class TextUtil {
       _shadowColor = 'rgba(40, 40, 40,  0.8)';
       _color = '#000';
    }
-   
+
    static void light() {
       _shadowColor = 'rgba(75, 75, 75,  0.8)';
       _color = '#fff';

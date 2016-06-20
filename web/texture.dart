@@ -24,6 +24,7 @@ class AnimatedTexture {
 	double _time = 0.0;
 
 	AnimatedTexture(int interval, List files) {
+		if (interval == null) interval = 1000;
 		_list = new List();
 		_interval = (interval / 1000).round();
 		for (int i = 0; i < files.length; i++){

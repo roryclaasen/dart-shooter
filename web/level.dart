@@ -123,6 +123,6 @@ class Level {
    }
 
    void _genEnemy() {
-
+      _enemies.add(new Meteor());
    }
 }

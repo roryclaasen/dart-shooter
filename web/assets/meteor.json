@@ -1,0 +1,10 @@
+{
+	"texture": {
+		"files": ["meteorBrown_big1.png", "meteorBrown_big2.png", "meteorBrown_big3.png", "meteorBrown_big4.png"],
+		"random": true,
+		"scale": 0.9
+	},
+	"entity": {
+		"health": 1
+	}
+}
