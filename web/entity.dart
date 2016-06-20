@@ -2,6 +2,8 @@ part of shooter;
 
 final double velocity = 128.0;
 
+Random random = new Random();
+
 class Entity {
 	Texture _texture;
 	AnimatedTexture _animTexture;
@@ -40,7 +42,7 @@ class Entity {
 		if (_texture != null) context.drawImageScaled(_texture.getTexture(), getBounds().left, getBounds().top,getBounds().width,getBounds().height);
 	}
 
-	void update(final CanvasElement canvas, final double elapsed) {
+	void update(final double elapsed) {
 		if (_animTexture != null) {
 			_animTexture.update(elapsed);
 			_texture = _animTexture.getCurrent();
@@ -82,22 +84,43 @@ class Entity {
 }
 
 class Player extends Entity {
-	Keyboard _keyboard;
-	Player(Keyboard keyboard) : super(0.0, 0.0, width: 79, height: 55) {
-		_keyboard = keyboard;
+	Player() : super(0.0, 0.0, width: 79, height: 55) {
 		loadData("player.json");
 	}
 
-	void update(final CanvasElement canvas, final double elapsed) {
-		super.update(canvas, elapsed);
-
-		if (_keyboard.isPressed(KeyCode.A)) _x -= velocity * elapsed;
-		if (_keyboard.isPressed(KeyCode.D)) _x += velocity * elapsed;
-		if (_keyboard.isPressed(KeyCode.W)) _y -= velocity * elapsed;
-		if (_keyboard.isPressed(KeyCode.S)) _y += velocity * elapsed;
+	void update(final double elapsed) {
+		super.update(elapsed);
+		double pVelocity = velocity * 1.25;
+		if (Keyboard.isPressed(KeyCode.A)) _x -= pVelocity * elapsed;
+		if (Keyboard.isPressed(KeyCode.D)) _x += pVelocity * elapsed;
+		if (Keyboard.isPressed(KeyCode.W)) _y -= pVelocity * elapsed;
+		if (Keyboard.isPressed(KeyCode.S)) _y += pVelocity * elapsed;
 		if (getBounds().left < 0) _x = 0.0;
-		if (getBounds().right > canvas.width) _x = 0.0 + canvas.width - _width;
+		if (getBounds().right > GameHost.width) _x = 0.0 + GameHost.width - _width;
 		if (getBounds().top < 40) _y = 40.0; // To not get to0 close to the text at the top
-		if (getBounds().bottom > canvas.height) _y = canvas.height - _height + 0.0;
+		if (getBounds().bottom > GameHost.height) _y = GameHost.height - _height + 0.0;
+	}
+}
+
+class Enemy extends Entity {
+	final String _type;
+	bool _remove = false;
+	
+	Enemy(this._type) : super(0.0, 0.0) {
+		loadData("${_type}.json");
+		randomPosition(-10);
+	}
+
+	void randomPosition(int y) {
+		int width = GameHost.width;
+		_x = 0.0 + random.nextInt(width);
+	}
+
+	void remove() {
+		_remove = true;
+	}
+
+	bool isRemoved() {
+		return _remove;
 	}
 }

@@ -13,7 +13,6 @@ class GUIElement {
 		return new Rectangle(_x, _y, _width, _height);
 	}
 
-	void update(final CanvasElement canvas) {}
 	void render(CanvasRenderingContext2D context) {}
 
 	void setWidth(int width) {
@@ -46,8 +45,6 @@ class GUIButton extends GUIElement {
 	Texture _texture, _hover, _active;
 	final String detail;
 
-	TextUtil _textUtil = new TextUtil();
-
 	GUIButton(int x, int y, this.detail, final CanvasElement canvas) : super(x, y){
 		_texture = new Texture("buttonBlue.png");
 		_hover = new Texture("buttonRed.png");
@@ -67,6 +64,7 @@ class GUIButton extends GUIElement {
 		canvas.onMouseUp.listen((e){
 			if (canvas.getBoundingClientRect().containsPoint(e.client)) {
 				if (getBounds().containsPoint(e.offset)) {
+					AudioMaster.sfx_shieldDown.play();
 					window.dispatchEvent(new CustomEvent('guiButtonClick', detail: this.detail));
 				}
 			}
@@ -75,9 +73,9 @@ class GUIButton extends GUIElement {
 
 	void render(CanvasRenderingContext2D context) {
 		if (_active != null) context.drawImage(_active.getTexture(), getBounds().left, getBounds().top);
-		_textUtil.dark();
-		_textUtil.drawCenteredString(context, detail, _x, _y + (_height / 4).round() - 2);
-		_textUtil.light();
+		TextUtil.dark();
+		TextUtil.drawCenteredString(context, detail, _x, _y + (_height / 4).round() - 2);
+		TextUtil.light();
 	}
 
 	Rectangle getBounds() {

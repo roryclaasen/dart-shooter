@@ -1,7 +1,7 @@
 part of shooter;
 
 class Keyboard {
-   final HashSet<int> _keys = new HashSet<int>();
+   static final HashSet<int> _keys = new HashSet<int>();
 
    Keyboard() {
       window.onKeyDown.listen((final KeyboardEvent e) {
@@ -13,7 +13,7 @@ class Keyboard {
       });
    }
 
-   isPressed(int keyCode) => _keys.contains(keyCode);
+   static isPressed(int keyCode) => _keys.contains(keyCode);
 }
 
 class JSONRequest {
@@ -46,51 +46,51 @@ class JSONRequest {
 }
 
 class TextUtil {
-   String _shadowColor = 'rgba(75, 75, 75,  0.8)';
-   String _color = '#fff';
+   static String _shadowColor = 'rgba(75, 75, 75,  0.8)';
+   static String _color = '#fff';
 
-   void _initContext(CanvasRenderingContext2D context) {
+   static void _initContext(CanvasRenderingContext2D context) {
       context..fillStyle = _color
       ..font = "20pt squares";
    }
 
-   void _addShaddow(CanvasRenderingContext2D context) {
+   static void _addShaddow(CanvasRenderingContext2D context) {
       context..shadowOffsetX = 2
       ..shadowOffsetY = 2
       ..shadowBlur = 0
       ..shadowColor = _shadowColor;
    }
 
-   void _removeShaddow(CanvasRenderingContext2D context) {
+   static void _removeShaddow(CanvasRenderingContext2D context) {
       context..shadowOffsetX = 0
       ..shadowOffsetY = 0
       ..shadowBlur = 0
       ..shadowColor = 'rgba(255, 255, 255,  1)';
    }
 
-   void drawString(CanvasRenderingContext2D context, String text, int x, int y) {
+   static void drawString(CanvasRenderingContext2D context, String text, int x, int y) {
       _initContext(context);
       _addShaddow(context);
       context.fillText(text, x, y);
       _removeShaddow(context);
    }
 
-   void drawCenteredString(CanvasRenderingContext2D context, String text, int x, int y) {
+   static void drawCenteredString(CanvasRenderingContext2D context, String text, int x, int y) {
       drawStringAligned(context, text, x, y, "center");
    }
 
-   void drawStringAligned(CanvasRenderingContext2D context, String text, int x, int y, String align) {
+   static void drawStringAligned(CanvasRenderingContext2D context, String text, int x, int y, String align) {
       context.textAlign = align;
       drawString(context, text, x, y);
       context.textAlign = "left";
    }
 
-   void drawStringFloatRight(CanvasRenderingContext2D context, String text, int x, int y) {
+   static void drawStringFloatRight(CanvasRenderingContext2D context, String text, int x, int y) {
       _initContext(context);
       drawString(context, text, (x - context.measureText(text).width).round(), y);
    }
 
-   void wrapText(context, text, x, y, maxWidth, lineHeight) {
+   static void wrapText(context, text, x, y, maxWidth, lineHeight) {
       _initContext(context);
       var words = text.split(" ");
       var line = "";
@@ -108,11 +108,12 @@ class TextUtil {
       context.fillText(line, x, y);
    }
 
-   void dark() {
+   static void dark() {
       _shadowColor = 'rgba(40, 40, 40,  0.8)';
       _color = '#000';
    }
-   void light() {
+   
+   static void light() {
       _shadowColor = 'rgba(75, 75, 75,  0.8)';
       _color = '#fff';
    }

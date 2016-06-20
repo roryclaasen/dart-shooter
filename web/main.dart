@@ -3,11 +3,14 @@ library shooter;
 // Imports
 import 'dart:html';
 import 'dart:async';
+import 'dart:web_audio';
+import 'dart:math';
 import 'dart:collection';
 import 'package:json_object/json_object.dart';
 
 // Game Files
 part 'toolbox.dart';
+part 'audio.dart';
 part 'texture.dart';
 part 'gui.dart';
 part 'entity.dart';

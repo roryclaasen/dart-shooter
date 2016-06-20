@@ -3,16 +3,23 @@ part of shooter;
 class GameHost {
    final CanvasElement _canvas;
    final CanvasRenderingContext2D _context;
-   int _lastTimestamp = 0;
-   static final Keyboard _keyboard = new Keyboard();
-   Level level;
+   final Keyboard keyboard = new Keyboard();
+   final AudioMaster audio = new AudioMaster();
 
-   Texture _background;
+   int _lastTimestamp = 0;
    int _backgroundPos = 0;
+
+   Level _level;
+   Texture _background;
+
+   static int width, height;
 
    GameHost(this._canvas, this._context) {
       _background = new Texture("background.png");
-      level = new Level(_canvas, _keyboard);
+      _level = new Level(_canvas);
+
+      width = _canvas.width;
+      height = _canvas.height;
    }
 
    run() {
@@ -27,23 +34,19 @@ class GameHost {
 
    double _getElapsed() {
       final int time = new DateTime.now().millisecondsSinceEpoch;
-
       double elapsed = 0.0;
-      if (_lastTimestamp != 0) {
-         elapsed = (time - _lastTimestamp) / 1000.0;
-      }
-
+      if (_lastTimestamp != 0) elapsed = (time - _lastTimestamp) / 1000.0;
       _lastTimestamp = time;
       return elapsed;
    }
 
    void _update(final double elapsed) {
-      level.update(elapsed);
+      _level.update(elapsed);
    }
 
    void _render() {
       _drawBackground();
-      level.render(_context);
+      _level.render(_context);
    }
 
    void _drawBackground() {
