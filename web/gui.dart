@@ -3,6 +3,7 @@ part of shooter;
 class GUIElement {
 	int _x, _y;
 	int _width = 0, _height = 0;
+	bool _visible = true;
 
 	GUIElement(this._x, this._y, {int width, int height}) {
 		if (width != null) _width = width;
@@ -39,6 +40,14 @@ class GUIElement {
 	Point getPosition() {
 		return new Point(_x, _y);
 	}
+
+	void setVisible(bool visible) {
+		_visible = visible;
+	}
+
+	bool isVisible() {
+		return _visible;
+	}
 }
 
 class GUIButton extends GUIElement {
@@ -54,28 +63,33 @@ class GUIButton extends GUIElement {
 			_height = _active.getTexture().height;
 		});
 		canvas.onMouseMove.listen((e) {
-			_active = _texture;
-			if (canvas.getBoundingClientRect().containsPoint(e.client)) {
-				if (getBounds().containsPoint(e.offset)) {
-					_active = _hover;
+			if (isVisible()) {
+				_active = _texture;
+				if (canvas.getBoundingClientRect().containsPoint(e.client)) {
+					if (getBounds().containsPoint(e.offset)) {
+						_active = _hover;
+					}
 				}
 			}
 		});
-		canvas.onMouseUp.listen((e){
-			if (canvas.getBoundingClientRect().containsPoint(e.client)) {
-				if (getBounds().containsPoint(e.offset)) {
-					AudioMaster.sfx_shieldDown.play();
-					window.dispatchEvent(new CustomEvent('guiButtonClick', detail: this.detail));
+		canvas.onMouseUp.listen((e) {
+			if (isVisible()) {
+				if (canvas.getBoundingClientRect().containsPoint(e.client)) {
+					if (getBounds().containsPoint(e.offset)) {
+						window.dispatchEvent(new CustomEvent('guiButtonClick', detail: this.detail));
+					}
 				}
 			}
 		});
 	}
 
 	void render(CanvasRenderingContext2D context) {
-		if (_active != null) context.drawImage(_active.getTexture(), getBounds().left, getBounds().top);
-		TextUtil.dark();
-		TextUtil.drawCenteredString(context, detail, _x, _y + (_height / 4).round() - 2);
-		TextUtil.light();
+		if (isVisible()) {
+			if (_active != null) context.drawImage(_active.getTexture(), getBounds().left, getBounds().top);
+			TextUtil.dark();
+			TextUtil.drawCenteredString(context, detail, _x, _y + (_height / 4).round() - 2);
+			TextUtil.light();
+		}
 	}
 
 	Rectangle getBounds() {

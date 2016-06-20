@@ -1,74 +1,99 @@
 part of shooter;
 
 class Level {
-   var guiButtonClickStreamProvider = new EventStreamProvider<CustomEvent>("guiButtonClick");
-   final CanvasElement _canvas;
+   var _guiButtonClick = new EventStreamProvider<CustomEvent>("guiButtonClick");
    GUIButton _play, _resume, _menu;
 
-   Entity player;
+   Player _player;
 
-   List<Enemy> enemies = new List<Enemy>();
+   List<Enemy> _enemies = new List<Enemy>();
 
    bool _playing = false;
    bool _pause = false;
 
-   Level(this._canvas) {
-      _init();
+   double _time = 0.0;
+
+   Level(CanvasElement canvas) {
+      _init(canvas);
       reset();
    }
 
-   void _init() {
-      _play = new GUIButton((_canvas.width / 2).round(), (_canvas.height / 2).round(), "PLAY", _canvas);
-      _resume = new GUIButton((_canvas.width / 2).round(), (_canvas.height / 2).round() - 40, "RESUME", _canvas);
-      _menu = new GUIButton((_canvas.width / 2).round(), (_canvas.height / 2).round() + 40, "MENU", _canvas);
+   void _init(CanvasElement canvas) {
+      _play = new GUIButton((GameHost.width / 2).round(), (GameHost.height / 2).round(), "PLAY", canvas);
+      _resume = new GUIButton((GameHost.width / 2).round(), (GameHost.height / 2).round() - 40, "RESUME", canvas);
+      _menu = new GUIButton((GameHost.width / 2).round(), (GameHost.height / 2).round() + 40, "MENU", canvas);
 
-      player = new Player();
+      _player = new Player();
 
-      guiButtonClickStreamProvider.forTarget(window).listen((e) {
-         if (e.detail == _play.detail) _playing = true;
-         if (e.detail == _resume.detail) _pause = false;
+      _guiButtonClick.forTarget(window).listen((e) {
+         AudioMaster.sfx_shieldDown.play();
+         if (e.detail == _play.detail) play();
+         if (e.detail == _resume.detail) setPause(false);
          if (e.detail == _menu.detail) reset();
       });
       window.onClick.listen((e) {
          if (e.target.id != "game") {
-            if (_playing) _pause = true;
+            if (_playing) setPause(true);
          }
       });
    }
 
    void render(CanvasRenderingContext2D context) {
-      player.render(context);
+      _enemies.forEach((enemy) {
+         enemy.render(context);
+      });
+      _player.render(context);
       if (_playing) {
          if (_pause) {
             context..fillStyle = "rgba(0, 0, 0, 0.25)"
             ..beginPath()
-            ..rect(0, 0, _canvas.width, _canvas.height)
+            ..rect(0, 0, GameHost.width, GameHost.height)
             ..fill();
-            TextUtil.drawCenteredString(context, "PAUSE", (_canvas.width / 2).round(), (_canvas.height / 3).round());
+            TextUtil.drawCenteredString(context, "PAUSE", (GameHost.width / 2).round(), (GameHost.height / 3).round());
             _resume.render(context);
             _menu.render(context);
          }
-         TextUtil.drawString(context, "${player.getHealth()} hp", 10, 30);
-         TextUtil.drawStringFloatRight(context, "00000", _canvas.width - 10, 30);
+         TextUtil.drawString(context, "${_player.getHealth()} hp", 10, 30);
+         TextUtil.drawStringFloatRight(context, _formatScore(_player.getScore()), GameHost.width - 10, 30);
       } else {
-         enemies.forEach((enemy) {
-            enemy.render(context);
-         });
          _play.render(context);
       }
    }
 
+   String _formatScore(int score) {
+      String formatScore = "$score";
+      int length = 7;
+      int spaces = length - formatScore.length;
+      if (spaces < 0) {
+         formatScore = "";
+         for (int i = 0; i < length; i++) {
+            formatScore += "9";
+         }
+         return formatScore;
+      }
+      for (int i = 0; i < spaces; i++) {
+         formatScore = "0" + formatScore;
+      }
+      return formatScore;
+   }
+
    void update(final double elapsed) {
       if (_playing) {
-         if(Keyboard.isPressed(KeyCode.ESC)) {
-            _pause = true;
+         if (Keyboard.isPressed(KeyCode.ESC)) {
+            setPause(true);
          }
          if(!_pause) {
-            enemies.forEach((enemy) {
+            _time += elapsed;
+            if (_time >= 1.0) {
+                _player.addScore(1);
+               _genEnemy();
+               _time = 0.0;
+            }
+            _enemies.forEach((enemy) {
                enemy.update(elapsed);
-               if (enemy.isRemoved()) enemies.remove(enemy);
+               if (enemy.isRemoved()) _enemies.remove(enemy);
             });
-            player.update(elapsed);
+            _player.update(elapsed);
          }
       } else {
       }
@@ -76,7 +101,28 @@ class Level {
 
    void reset() {
       _playing = _pause = false;
-      player.setPosition(new Point((_canvas.width / 2) - (player.getWidth() / 2), (_canvas.height - player.getHeight()) - 50.0));
-      enemies.clear();
+      setPause(false);
+      _play.setVisible(true);
+
+      _player.setPosition(new Point((GameHost.width / 2) - (_player.getWidth() / 2), (GameHost.height - _player.getHeight()) - 50.0));
+      _player.setScore(0);
+      _enemies.clear();
+      _time = 0.0;
+   }
+
+   void play() {
+      setPause(false);
+      _play.setVisible(false);
+      _playing = true;
+   }
+
+   void setPause(bool pause) {
+      _pause = pause;
+      _resume.setVisible(pause);
+      _menu.setVisible(pause);
+   }
+
+   void _genEnemy() {
+
    }
 }

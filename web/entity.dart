@@ -84,6 +84,7 @@ class Entity {
 }
 
 class Player extends Entity {
+	int _score = 0;
 	Player() : super(0.0, 0.0, width: 79, height: 55) {
 		loadData("player.json");
 	}
@@ -100,12 +101,24 @@ class Player extends Entity {
 		if (getBounds().top < 40) _y = 40.0; // To not get to0 close to the text at the top
 		if (getBounds().bottom > GameHost.height) _y = GameHost.height - _height + 0.0;
 	}
+
+	void setScore(int score) {
+		_score = score;
+	}
+
+	void addScore(int score) {
+		_score += score;
+	}
+
+	int getScore() {
+		return _score;
+	}
 }
 
 class Enemy extends Entity {
 	final String _type;
 	bool _remove = false;
-	
+
 	Enemy(this._type) : super(0.0, 0.0) {
 		loadData("${_type}.json");
 		randomPosition(-10);

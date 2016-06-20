@@ -15,11 +15,12 @@ class GameHost {
    static int width, height;
 
    GameHost(this._canvas, this._context) {
+      width = _canvas.width;
+      height = _canvas.height;
+
       _background = new Texture("background.png");
       _level = new Level(_canvas);
 
-      width = _canvas.width;
-      height = _canvas.height;
    }
 
    run() {
