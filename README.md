@@ -10,8 +10,5 @@ Play the game on [my website](http://roryclaasen.me/dart-shooter).<br>
 Please note that it is still a work in progress
 
 ## Credits
-### Fonts
-#### [Squares](http://www.dafont.com/squares2.font) by [Jovanny Lemonad](http://www.dafont.com/jovanny-lemonad.d1907)
-
-### Assets
-#### Textures by [Kenney](http://www.kenney.nl/)
+- [Squares](http://www.dafont.com/squares2.font) by [Jovanny Lemonad](http://www.dafont.com/jovanny-lemonad.d1907)
+- Textures by [Kenney](http://www.kenney.nl/)

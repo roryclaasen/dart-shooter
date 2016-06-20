@@ -1,0 +1,86 @@
+part of shooter;
+
+class GUIElement {
+	int _x, _y;
+	int _width = 0, _height = 0;
+
+	GUIElement(this._x, this._y, {int width, int height}) {
+		if (width != null) _width = width;
+		if (height != null) _height = height;
+	}
+
+	Rectangle getBounds() {
+		return new Rectangle(_x, _y, _width, _height);
+	}
+
+	void update(final CanvasElement canvas) {}
+	void render(CanvasRenderingContext2D context) {}
+
+	void setWidth(int width) {
+		_width = width;
+	}
+
+	void setHeight(int height) {
+		_height = height;
+	}
+
+	int getWidth() {
+		return _width;
+	}
+
+	int getHeight() {
+		return _height;
+	}
+
+	void setPosition(Point cords) {
+		_x = cords.x;
+		_y = cords.y;
+	}
+
+	Point getPosition() {
+		return new Point(_x, _y);
+	}
+}
+
+class GUIButton extends GUIElement {
+	Texture _texture, _hover, _active;
+	final String detail;
+
+	TextUtil _textUtil = new TextUtil();
+
+	GUIButton(int x, int y, this.detail, final CanvasElement canvas) : super(x, y){
+		_texture = new Texture("buttonBlue.png");
+		_hover = new Texture("buttonRed.png");
+		_active = _texture;
+		_texture.getTexture().onLoad.listen((e) {
+			_width = _active.getTexture().width;
+			_height = _active.getTexture().height;
+		});
+		canvas.onMouseMove.listen((e) {
+			_active = _texture;
+			if (canvas.getBoundingClientRect().containsPoint(e.client)) {
+				if (getBounds().containsPoint(e.offset)) {
+					_active = _hover;
+				}
+			}
+		});
+		canvas.onMouseUp.listen((e){
+			if (canvas.getBoundingClientRect().containsPoint(e.client)) {
+				if (getBounds().containsPoint(e.offset)) {
+					window.dispatchEvent(new CustomEvent('guiButtonClick', detail: this.detail));
+				}
+			}
+		});
+	}
+
+	void render(CanvasRenderingContext2D context) {
+		if (_active != null) context.drawImage(_active.getTexture(), getBounds().left, getBounds().top);
+		_textUtil.dark();
+		_textUtil.drawCenteredString(context, detail, _x, _y + (_height / 4).round() - 2);
+		_textUtil.light();
+	}
+
+	Rectangle getBounds() {
+		return new Rectangle(_x - (_width / 2), _y - (_height / 2), _width, _height);
+	}
+}

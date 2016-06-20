@@ -46,8 +46,11 @@ class JSONRequest {
 }
 
 class TextUtil {
+   String _shadowColor = 'rgba(75, 75, 75,  0.8)';
+   String _color = '#fff';
+
    void _initContext(CanvasRenderingContext2D context) {
-      context..fillStyle = '#fff'
+      context..fillStyle = _color
       ..font = "20pt squares";
    }
 
@@ -55,7 +58,7 @@ class TextUtil {
       context..shadowOffsetX = 2
       ..shadowOffsetY = 2
       ..shadowBlur = 0
-      ..shadowColor = 'rgba(75, 75, 75,  0.8)';
+      ..shadowColor = _shadowColor;
    }
 
    void _removeShaddow(CanvasRenderingContext2D context) {
@@ -103,5 +106,14 @@ class TextUtil {
          else { line = testLine; }
       }
       context.fillText(line, x, y);
+   }
+
+   void dark() {
+      _shadowColor = 'rgba(40, 40, 40,  0.8)';
+      _color = '#000';
+   }
+   void light() {
+      _shadowColor = 'rgba(75, 75, 75,  0.8)';
+      _color = '#fff';
    }
 }

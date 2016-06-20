@@ -9,6 +9,7 @@ import 'package:json_object/json_object.dart';
 // Game Files
 part 'toolbox.dart';
 part 'texture.dart';
+part 'gui.dart';
 part 'entity.dart';
 part 'level.dart';
 part 'game.dart';

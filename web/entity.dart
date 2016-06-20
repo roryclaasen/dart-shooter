@@ -83,7 +83,7 @@ class Entity {
 
 class Player extends Entity {
 	Keyboard _keyboard;
-	Player(Keyboard keyboard) : super(0.0, 0.0, width: 79, height: 55){
+	Player(Keyboard keyboard) : super(0.0, 0.0, width: 79, height: 55) {
 		_keyboard = keyboard;
 		loadData("player.json");
 	}
