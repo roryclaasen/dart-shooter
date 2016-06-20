@@ -30,7 +30,11 @@ class Level {
          if (e.detail == _resume.detail) _pause = false;
          if (e.detail == _menu.detail) reset();
       });
-
+      window.onClick.listen((e) {
+         if (e.target.id != "game") {
+            if(_playing) _pause = true;
+         }
+      });
       reset();
    }
 
