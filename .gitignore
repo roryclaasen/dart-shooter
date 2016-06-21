@@ -28,3 +28,4 @@ pubspec.lock
 
 # My Custom .gitignore
 /references/
+*.db
