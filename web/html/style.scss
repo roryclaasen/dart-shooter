@@ -1,28 +1,25 @@
-/*
-Copyright 2016 Rory Claasen
+@font-face {
+	font-family: squares;
+	src: url(../assets/Squares.otf);
+}
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 @mixin transition2v($var1, $var2) {
 	-webkit-transition: $var1 $var2 ease;
 	-moz-transition: $var1 $var2 ease;
 	-o-transition: $var1 $var2 ease;
 	transition: $var1 $var2 ;
 }
-@font-face {
-	font-family: squares;
-	src: url(../assets/Squares.otf);
+
+@mixin noSelect() {
+	cursor: default;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
+
 html, body {
 	background-color: #000;
 	background-image: url(../assets/background.png);
@@ -31,6 +28,7 @@ html, body {
 	font-family: 'squares', sans-serif;
 	text-align: center;
 }
+
 header {
 	display: block;
 	height: 150px;
@@ -53,47 +51,75 @@ header {
 		margin-bottom: 20px;
 	}
 }
+
 .content {
 	.game-container {
 		margin-top: 6em;
 		margin-bottom: 3em;
 		min-width: 400px;
-		#game {
-			background: rgb(0, 0, 0);
+		.game {
+			width: 400px;
+			height: 600px;
+			background: #000;
 			z-index: 10;
 			-webkit-box-shadow: 0px 0px 60px 30px rgba(0, 0, 0, 0.75);
 			-moz-box-shadow: 0px 0px 60px 30px rgba(0, 0, 0, 0.75);
 			box-shadow: 0px 0px 60px 30px rgba(0, 0, 0, 0.75);
+			@include noSelect();
+			&#game-none {
+				background-image: url(../assets/background.png);
+				display: block;
+				margin: auto;
+				.message {
+					vertical-align: middle;
+					text-align: center;
+					padding: 2em 3em;
+					white-space: pre-line;
+					i {
+						&.large{
+							font-size: 7em;
+						}
+					}
+					.title {
+						font-size: 1.35em;
+						&.large {
+							font-size: 1.75em;
+						}
+					}
+				}
+			}
 		}
 	}
 	.about {
-		cursor: default;
 		b {
 			font-size: 1.2em;
 			text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+			@include transition2v(text-shadow, 0.5s);
 			&:hover {
 				text-shadow: 0 0 15px rgba(255, 255, 255, 0.75);
 			}
-			@include transition2v(text-shadow, 0.5s);
 		}
 		hr {
 			width: 75%;
 		}
 	}
 }
+
 a {
 	color: white;
 	font-weight: bold;
 	text-decoration: none;
 	text-shadow: 0 0 5px rgba(255, 255, 255, 0.75);
 	font-size: 1.2em;
-	&:hover{
-		//text-decoration: underline;
+	@include transition2v(text-shadow, 0.5s);
+	&:hover {
 		text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
 	}
-	@include transition2v(text-shadow, 0.5s);
 }
+
 footer {
 	margin: 10px;
 	margin-top: 50px;
 }
+
+.hidden { display: none !important; }

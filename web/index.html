@@ -25,7 +25,8 @@ limitations under the License.
 	<title>Dart Shooter - Rory Claasen</title>
 
 	<link type="text/css" rel="stylesheet" href="html/style.min.css" />
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<script src="https://use.fontawesome.com/771046a8bd.js"></script>
 	<script type="text/javascript" src="html/main.js"></script>
 </head>
 <body>
@@ -35,7 +36,17 @@ limitations under the License.
 	</header>
 	<div class="content">
 		<div class="game-container">
-			<canvas id="game" width="400px" height="600px"></canvas>
+			<canvas id="game-canvas" class="game hidden" width="400px" height="600px"></canvas>
+			<div id="game-none" class="game">
+				<div class="message">
+					<i class="fa fa-exclamation-triangle large"></i>
+					<span class="title large">Uhh ohh...</span><br>
+					It looks like you are unable to play my game
+					<br><br><span class="title">Some reasons are</span><br>
+					You are on a mobile device
+					You browser is out of date
+				</div>
+			</div>
 		</div>
 		<div class="about">
 			<hr>
@@ -49,5 +60,5 @@ limitations under the License.
 		A Game by <a href="http://roryclaasen.me">Rory Claasen</a>.
 		Source code available on <a href="https://github.com/GOGO98901/dart-shooter">github</a>.
 	</footer>
-	<script type="application/dart" src="main.dart"></script>
+	<script type="application/dart" src="main.dart" onload="javascript:playGame();"></script>
 </body>
