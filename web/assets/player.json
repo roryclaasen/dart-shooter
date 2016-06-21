@@ -1,7 +1,6 @@
 {
 	"texture": {
 		"files": ["player.png"],
-		"interval": 200,
 		"shadow": 10
 	},
 	"entity": {
