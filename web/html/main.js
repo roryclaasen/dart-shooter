@@ -19,14 +19,16 @@ window.mobileAndTabletcheck = function() {
 	return check;
 }
 
-$(window).load(function() {
+/*$(window).load(function() {
 	if (!window.mobileAndTabletcheck) {
 		$('#game-canvas').addClass('hidden');
 		$('#game-none').removeClass('hidden');
 	}
-});
+});*/
 
 function playGame() {
-	$('#game-canvas').removeClass('hidden');
-	$('#game-none').addClass('hidden');
+	if (!window.mobileAndTabletcheck) {
+		$('#game-canvas').removeClass('hidden');
+		$('#game-none').addClass('hidden');
+	}
 }
