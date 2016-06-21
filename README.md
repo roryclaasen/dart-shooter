@@ -1,6 +1,6 @@
 [![Dart-shooter](web/assets/player.png)](http://roryclaasen.me/dart-shooter)
 # Dart Shooter
-A simple dart game
+A Spaceship Shooter Game
 
 [![Travis](https://img.shields.io/travis/GOGO98901/dart-shooter.svg?style=flat-square)](https://travis-ci.org/GOGO98901/dart-shooter/branches)
 [![GitHub issues](https://img.shields.io/github/issues/GOGO98901/dart-shooter.svg?style=flat-square)](https://github.com/GOGO98901/dart-shooter/issues)
