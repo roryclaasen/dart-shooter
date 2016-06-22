@@ -27,14 +27,14 @@ html, body {
 	color: white;
 	font-family: 'squares', sans-serif;
 	text-align: center;
+	min-width: 400px;
 }
 
 header {
 	display: block;
-	height: 150px;
+	min-height: 150px;
 	width: 100%;
 	margin-top: 20px;
-	margin-bottom: 2.5em;
 	font-size: 1.5em;
 	z-index: 50;
 	.title {
@@ -102,9 +102,9 @@ header {
 				text-shadow: 0 0 15px rgba(255, 255, 255, 0.75);
 			}
 		}
-		hr {
-			border-bottom: solid;
-		}
+	}
+	section {
+		border-top: solid;
 	}
 }
 

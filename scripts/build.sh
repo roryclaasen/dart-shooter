@@ -1,4 +1,3 @@
-@echo off
-title pub build
+#!/bin/sh
 cd ../
 pub build --mode=release

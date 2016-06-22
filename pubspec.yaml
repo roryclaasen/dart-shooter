@@ -9,6 +9,7 @@ dependencies:
   json_object: ^1.0.19
   dart_to_js_script_rewriter: "^1.0.1"
   browser: any
+  yaml: any
 
 transformers:
 - dart_to_js_script_rewriter

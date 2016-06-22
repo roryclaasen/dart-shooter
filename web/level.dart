@@ -80,6 +80,7 @@ class Level {
          }
       } else {
          _play.render(context);
+         TextUtil.drawStringFloatRight(context, "${GameData.version}", GameHost.width - 10, 30);
       }
    }
 

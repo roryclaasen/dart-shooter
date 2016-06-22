@@ -17,6 +17,7 @@ library shooter;
 
 // Imports
 import 'dart:html';
+import 'package:yaml/yaml.dart';
 import 'dart:async';
 import 'dart:web_audio';
 import 'dart:math';
@@ -33,7 +34,25 @@ part 'level.dart';
 part 'game.dart';
 
 void main() {
-   final CanvasElement canvas = querySelector("#game-canvas");
+   final CanvasElement canvas = querySelector(GameData.canvasIdentifier);
    canvas.focus();
    scheduleMicrotask(new GameHost(canvas, canvas.getContext('2d')).run);
+   GameData.loadVersion();
+}
+
+class GameData {
+   static const String canvasIdentifier = "#game-canvas";
+   static String version = "debug";
+
+   static void loadVersion() {
+      HttpRequest.getString('../pubspec2.yaml').then((String yaml){
+         YamlMap map = loadYaml(yaml);
+         version = "debug." + map['version'];
+      }).catchError((Error error) {
+         HttpRequest.getString('data.yaml').then((String yaml){
+            YamlMap map = loadYaml(yaml);
+            version = map['version'];
+         });
+      });
+   }
 }
