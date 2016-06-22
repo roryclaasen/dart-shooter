@@ -99,15 +99,18 @@ class Level {
          }
          if(!_pause) {
             _time += elapsed;
-            if (_time >= 2.0) {
+            if (_time >= 1.0) {
                _player.addScore(1);
-               _player.damage(1);
                _genEnemy();
                _time = 0.0;
             }
             List<Enemy> toRemove = new List<Enemy>();
             _enemies.forEach((enemy) {
                enemy.update(elapsed);
+               if (enemy.collide(_player, point: true)) {
+                  _player.damage(1);
+                  enemy.remove();
+               }
                if (enemy.getPosition().y > GameHost.height) enemy.remove();
                if (enemy.isRemoved()) toRemove.add(enemy);
             });
@@ -125,7 +128,7 @@ class Level {
       setPause(false);
       _play.setVisible(true);
 
-      _player.setPosition(new Point((GameHost.width / 2) - (_player.getWidth() / 2), (GameHost.height - _player.getHeight()) - 50.0));
+      _player.setPosition(new Point((GameHost.width / 2), (GameHost.height - _player.getHeight()) - 50.0));
       _player.setScore(0);
       _enemies.clear();
       _time = 0.0;

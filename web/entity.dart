@@ -102,7 +102,9 @@ class Entity {
 	}
 
 	Rectangle getBounds() {
-		return new Rectangle(_x, _y, _width * _scale, _height * _scale);
+		double width =  _width * _scale;
+		double height =  _height * _scale;
+		return new Rectangle(_x - (width / 2), _y - (height / 2), width, height);
 	}
 
 	void setWidth(int width) {
@@ -147,8 +149,11 @@ class Entity {
 		if (_health <= 0) remove();
 	}
 
-	bool collide(Entity entity) {
-		if (entity ==null) return false;
+	bool collide(Entity entity, {bool point}) {
+		if (entity == null) return false;
+		if (point != null) {
+			if (point)  return getBounds().containsPoint(entity.getPosition());
+		}
 		return getBounds().intersects(entity.getBounds());
 	}
 }
@@ -166,10 +171,10 @@ class Player extends Entity {
 		if (Keyboard.isPressed(KeyCode.D)) _x += pVelocity * elapsed;
 		if (Keyboard.isPressed(KeyCode.W)) _y -= pVelocity * elapsed;
 		if (Keyboard.isPressed(KeyCode.S)) _y += pVelocity * elapsed;
-		if (getBounds().left < 0) _x = 0.0;
-		if (getBounds().right > GameHost.width) _x = 0.0 + GameHost.width - _width;
-		if (getBounds().top < 40) _y = 40.0; // To not get to close to the text at the top
-		if (getBounds().bottom > GameHost.height) _y = GameHost.height - _height + 0.0;
+		if (getBounds().left < 0) _x = getBounds().width / 2;
+		if (getBounds().right > GameHost.width) _x = 0.0 + GameHost.width - (getBounds().width / 2);
+		if (getBounds().top < 40) _y = (getBounds().height / 2) + 40.0; // To not get to close to the text at the top
+		if (getBounds().bottom > GameHost.height) _y = GameHost.height - (getBounds().height / 2);
 	}
 
 	void setScore(int score) {
