@@ -101,9 +101,15 @@ class Entity {
 		}
 	}
 
-	Rectangle getBounds() {
-		double width =  _width * _scale;
-		double height =  _height * _scale;
+	Rectangle getBounds({bool small}) {
+		double scale = _scale;
+		if (small != null) {
+			if (small) {
+				scale /= 1.75;
+			}
+		}
+		double width =  _width * scale;
+		double height =  _height * scale;
 		return new Rectangle(_x - (width / 2), _y - (height / 2), width, height);
 	}
 
@@ -149,10 +155,13 @@ class Entity {
 		if (_health <= 0) remove();
 	}
 
-	bool collide(Entity entity, {bool point}) {
+	bool collide(Entity entity, {bool point, bool doSmall}) {
 		if (entity == null) return false;
 		if (point != null) {
 			if (point)  return getBounds().containsPoint(entity.getPosition());
+		}
+		if (doSmall != null) {
+			return getBounds(small: doSmall).intersects(entity.getBounds());
 		}
 		return getBounds().intersects(entity.getBounds());
 	}
