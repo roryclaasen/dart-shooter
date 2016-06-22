@@ -22,11 +22,13 @@ Random random = new Random();
 class Entity {
 	Texture _texture;
 	AnimatedTexture _animTexture;
+	AnimatedTexture _damage;
 	double _x = 0.0, _y = 0.0;
 	int _width, _height;
-	int _health;
+	int _health, _maxHealth;
 	int _shadowOffset = 5;
 	double _scale = 1.0;
+	bool _remove = false;
 
 	Entity(this._x, this._y, {String texturePath, int width, int height}) {
 		if (texturePath != null) _texture = new Texture(texturePath);
@@ -49,14 +51,16 @@ class Entity {
 			} else {
 				_texture = new Texture(files[0]);
 			}
-			if(texture.containsKey("shadow")) _shadowOffset = texture.shadow;
-			if(texture.containsKey("scale")) _scale = texture.scale;
+			if (texture.containsKey("damage")) _damage = new AnimatedTexture(null, texture.damage);
+			if (texture.containsKey("shadow")) _shadowOffset = texture.shadow;
+			if (texture.containsKey("scale")) _scale = texture.scale;
 		}
 		if (req.hasKey("entity")) {
 			JsonObject entity = req.get("entity");
 
 			if(entity.containsKey("health")) _health = entity.health;
 			else _health = 1;
+			_maxHealth = _health;
 		}
 
 		if (_texture != null) {
@@ -73,11 +77,20 @@ class Entity {
 			..shadowOffsetY = _shadowOffset
 			..shadowBlur = _shadowOffset / 2
 			..shadowColor = 'rgba(0, 0, 0,  0.5)';
-			context.drawImageScaled(_texture.getTexture(), getBounds().left, getBounds().top,getBounds().width,getBounds().height);
+			context.drawImageScaled(_texture.getTexture(), getBounds().left, getBounds().top, getBounds().width, getBounds().height);
 			context..shadowOffsetX = 0
 			..shadowOffsetY = 0
 			..shadowBlur = 0
 			..shadowColor = 'rgba(255, 255, 255,  1)';
+			if (_damage != null) {
+				if (_health <= 0) _health = 0;
+				double steps =  _maxHealth / (_damage.size() + 1);
+				int index = (_damage.size() + 1) - ((_health / _maxHealth) * steps).round() - 1;
+				if (index > 0) {
+					_damage.setCurrent(index - 1);
+					context.drawImageScaled(_damage.getCurrent().getTexture(), getBounds().left, getBounds().top, getBounds().width, getBounds().height);
+				}
+			}
 		}
 	}
 
@@ -120,6 +133,24 @@ class Entity {
 	int getHealth() {
 		return _health;
 	}
+
+	void remove() {
+		_remove = true;
+	}
+
+	bool isRemoved() {
+		return _remove;
+	}
+
+	void damage(int damage) {
+		_health -= damage;
+		if (_health <= 0) remove();
+	}
+
+	bool collide(Entity entity) {
+		if (entity ==null) return false;
+		return getBounds().intersects(entity.getBounds());
+	}
 }
 
 class Player extends Entity {
@@ -156,7 +187,6 @@ class Player extends Entity {
 
 class Enemy extends Entity {
 	final String _type;
-	bool _remove = false;
 
 	Enemy(this._type) : super(0.0, 0.0) {
 		loadData("${_type}.json");
@@ -170,23 +200,18 @@ class Enemy extends Entity {
 		if (y == null) y = 0.0;
 		_y = y;
 	}
-
-	void remove() {
-		_remove = true;
-	}
-
-	bool isRemoved() {
-		return _remove;
-	}
 }
 
 class Meteor extends Enemy {
+	double _speedMul = 0.0;
 	Meteor() : super("meteor") {
-
+		_speedMul = 1.0 + random.nextDouble();
+		if (_speedMul < 1.0) _speedMul = 1.0;
+		if (_speedMul > 1.5) _speedMul = 1.5;
 	}
 
 	void update(final double elapsed) {
 		super.update(elapsed);
-		_y += elapsed * velocity;
+		_y += elapsed * (velocity * _speedMul);
 	}
 }

@@ -59,7 +59,16 @@ class AnimatedTexture {
 		if (_index >= _list.length) _index = 0;
 	}
 
+	void setCurrent(int index) {
+		if (index < 0 || index >= _list.length) index = 0;
+		_index = index;
+	}
+
 	Texture getCurrent() {
 		return _list[_index];
+	}
+
+	int size() {
+		return _list.length;
 	}
 }

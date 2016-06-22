@@ -99,8 +99,9 @@ class Level {
          }
          if(!_pause) {
             _time += elapsed;
-            if (_time >= 1.0) {
+            if (_time >= 2.0) {
                _player.addScore(1);
+               _player.damage(1);
                _genEnemy();
                _time = 0.0;
             }
