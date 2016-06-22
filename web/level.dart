@@ -117,6 +117,7 @@ class Level {
                enemy.update(elapsed);
                if (enemy.collide(_player, point: true)) {
                   _player.damage(1);
+                  AudioMaster.sfx_smash.play();
                   enemy.remove();
                }
                if (enemy.getPosition().y > GameHost.height) enemy.remove();
@@ -128,6 +129,7 @@ class Level {
             _player.update(elapsed);
             if (_player.isRemoved()) {
                _gameOver = true;
+               AudioMaster.sfx_lose.play();
                setPause(true);
             }
          }

@@ -1,6 +1,6 @@
 name: shooter
 description: A Spaceship Shooter Game
-version: 0.0.5
+version: 0.0.7
 homepage: https://github.com/GOGO98901/dart-shooter
 environment:
   sdk: '>=1.0.0'

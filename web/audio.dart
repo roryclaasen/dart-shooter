@@ -20,10 +20,12 @@ class AudioMaster {
 
 	static Sound sfx_shieldDown;
 	static Sound sfx_lose;
+	static Sound sfx_smash;
 
 	AudioMaster() {
 		sfx_shieldDown = new Sound("sfx_shieldDown.ogg");
 		sfx_lose = new Sound("sfx_lose.ogg");
+		sfx_smash = new Sound("sfx_smash.ogg");
 	}
 }
 
