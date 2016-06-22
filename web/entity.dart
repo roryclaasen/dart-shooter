@@ -160,11 +160,12 @@ class Enemy extends Entity {
 
 	Enemy(this._type) : super(0.0, 0.0) {
 		loadData("${_type}.json");
-		randomPosition(-100.0);
+		randomPosition(y:-100.0);
 	}
 
-	void randomPosition(double y) {
+	void randomPosition({double y}) {
 		int width = GameHost.width;
+		if (_texture != null) width -= (_texture.getTexture().width * 0.8).round();
 		_x = 0.0 + random.nextInt(width);
 		if (y == null) y = 0.0;
 		_y = y;

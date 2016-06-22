@@ -53,6 +53,7 @@ header {
 }
 
 .content {
+	background-image: url(../assets/background.png);
 	.game-container {
 		margin-top: 6em;
 		margin-bottom: 3em;
@@ -91,6 +92,8 @@ header {
 		}
 	}
 	.about {
+		margin: auto;
+		width: 75%;
 		b {
 			font-size: 1.2em;
 			text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
@@ -100,7 +103,7 @@ header {
 			}
 		}
 		hr {
-			width: 75%;
+			border-bottom: solid;
 		}
 	}
 }
@@ -118,8 +121,16 @@ a {
 }
 
 footer {
-	margin: 10px;
+	margin: auto;
 	margin-top: 50px;
+	margin-bottom: 3em;
+	width: 75%;
+	border-top: solid;
+	border-bottom: solid;
+	p {
+		margin-top: 0;
+		white-space: pre-line;
+	}
 }
 
 .hidden { display: none !important; }

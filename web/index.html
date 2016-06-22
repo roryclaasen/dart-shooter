@@ -24,9 +24,10 @@ limitations under the License.
 	<link rel="icon" type="image/png" href="assets/player.png" />
 	<title>Dart Shooter - Rory Claasen</title>
 
-	<link type="text/css" rel="stylesheet" href="html/style.min.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 	<script src="https://use.fontawesome.com/771046a8bd.js"></script>
+
+	<link type="text/css" rel="stylesheet" href="html/style.min.css" />
 	<script type="text/javascript" src="html/main.js"></script>
 </head>
 <body>
@@ -57,8 +58,15 @@ limitations under the License.
 		</div>
 	</div>
 	<footer>
-		A Game by <a href="http://roryclaasen.me">Rory Claasen</a>.
-		Source code available on <a href="https://github.com/GOGO98901/dart-shooter">github</a>.
+		<p>
+			<a href="https://github.com/GOGO98901/dart-shooter" class="icon"><i class="fa fa-4x fa-github"></i></a>
+			Source code available on <a href="https://github.com/GOGO98901/dart-shooter">github</a>
+			<span class="small">Powered by <a href="https://www.dartlang.org/">Dart</a></span>
+		</p>
+		<p>
+			Copyright &copy; 2016 <a href="http://roryclaasen.me">Rory Claasen</a>
+		</p>
 	</footer>
-	<script type="application/dart" src="main.dart" onload="javascript:playGame();"></script>
+</footer>
+<script type="application/dart" src="main.dart" onload="javascript:playGame(true);"></script>
 </body>

@@ -61,14 +61,16 @@ class GameHost {
    }
 
    void _render() {
-      _drawBackground();
+      _drawBackground(!_level.isPaused());
       _level.render(_context);
    }
 
-   void _drawBackground() {
+   void _drawBackground(bool moving) {
       ImageElement image = _background.getTexture();
-      _backgroundPos++;
-      if (_backgroundPos >= 0) _backgroundPos = -image.height;
+      if (moving) {
+         _backgroundPos++;
+         if (_backgroundPos >= 0) _backgroundPos = -image.height;
+      }
       for(int x = 0; x < 2; x++) {
          for(int y = 0; y < 5; y++) {
             _context.drawImage(_background.getTexture(), x * image.width, (y * image.height) + _backgroundPos);

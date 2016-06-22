@@ -47,7 +47,7 @@ class Level {
          if (e.detail == _menu.detail) reset();
       });
       window.onClick.listen((e) {
-         if (e.target.id != "game") {
+         if (e.target.id != canvas.id) {
             if (_playing) setPause(true);
          }
       });
@@ -100,13 +100,18 @@ class Level {
          if(!_pause) {
             _time += elapsed;
             if (_time >= 1.0) {
-                _player.addScore(1);
+               _player.addScore(1);
                _genEnemy();
                _time = 0.0;
             }
+            List<Enemy> toRemove = new List<Enemy>();
             _enemies.forEach((enemy) {
                enemy.update(elapsed);
-               if (enemy.isRemoved()) _enemies.remove(enemy);
+               if (enemy.getPosition().y > GameHost.height) enemy.remove();
+               if (enemy.isRemoved()) toRemove.add(enemy);
+            });
+            toRemove.forEach((enemy) {
+               _enemies.remove(enemy);
             });
             _player.update(elapsed);
          }
@@ -139,5 +144,9 @@ class Level {
 
    void _genEnemy() {
       _enemies.add(new Meteor());
+   }
+
+   bool isPaused() {
+      return _pause;
    }
 }

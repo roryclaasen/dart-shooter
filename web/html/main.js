@@ -26,8 +26,8 @@ window.mobileAndTabletcheck = function() {
 	}
 });*/
 
-function playGame() {
-	if (!window.mobileAndTabletcheck) {
+function playGame(force) {
+	if (!window.mobileAndTabletcheck || force) {
 		$('#game-canvas').removeClass('hidden');
 		$('#game-none').addClass('hidden');
 	}
