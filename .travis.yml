@@ -7,6 +7,5 @@ env:
     - secure: "YnDYWxaD+14Rxa9kbLeqdm09z+0xGTZfUf5uvlC92nOpBL+3FEbHFQ6m/KrFGwEmAbuS9CPzTBQdp5tsfoprbgwbwi9KSP3Ig9Qtnacl2WZZOiwu1APW0cs01Bq+lNEBHdO6VItSdGruhgSEgVZu9ctmRjwaY5Cb+yexkJ7nOmXsh2nNb+zQMgCdltqcQqdEEPatKr/GC16cCSjOzKgvu9bFsfZjh4mUsxhRoc055R6OOJVsSqRN56z6C4EFv863h6yJ2qlWtOADQR1RNnPvTV67dW/LP2NOgeBNXxRKEcrxOElymQWNJWxZhexMv+gLibcroY1aN+nbOEpcPH3tdr7QvoVe3rLMInZwNLQ39RNo2JR/0UqIrTAt0eW9FLv/EaX3iHMslzB0WE/MuOBm1piB0922ZQbRCJ4V10Ct/Cubpi0HJGqOC9Z6Pejelh49sbqEFlBa5qj5qVw2D4ylKc16bheUqN7siPMUpQM6CvEU0vzcAFDOQUkKY9n5+6q/HaCpE2JgIIAwR/kWSx2xDByXkRhJIA/54yOWnl1Fa/zcNP8MLM0hQ0CAcWZqzKl1gZJDvKsrmCy7AZtJz1UCTZ18da00XL5t0Vvy38gaZpTxpBuEO4HE+62v2elDD6r4ubVfuusKiukFiV0WWMx/ZqmdpO6UUCeP6tCreE9JYAw="
 script:
    - pub build --mode=release
-   - python ./scripts/write-data-after-build.py
 after_success:
    - bash ./scripts/deploy-to-gh-pages.sh
