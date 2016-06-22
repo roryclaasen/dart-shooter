@@ -25,6 +25,7 @@ class Level {
 
    bool _playing = false;
    bool _pause = false;
+   bool _gameOver = false;
 
    double _time = 0.0;
 
@@ -64,12 +65,19 @@ class Level {
             ..beginPath()
             ..rect(0, 0, GameHost.width, GameHost.height)
             ..fill();
-            TextUtil.drawCenteredString(context, "PAUSE", (GameHost.width / 2).round(), (GameHost.height / 3).round());
-            _resume.render(context);
+            if (_gameOver) {
+               TextUtil.drawCenteredString(context, "GAME OVER", (GameHost.width / 2).round(), (GameHost.height / 3).round());
+               TextUtil.drawCenteredString(context, _formatScore(_player.getScore()), (GameHost.width / 2).round(), (GameHost.height / 3).round() + 30);
+            } else {
+               TextUtil.drawCenteredString(context, "PAUSE", (GameHost.width / 2).round(), (GameHost.height / 3).round());
+               _resume.render(context);
+            }
             _menu.render(context);
          }
-         TextUtil.drawString(context, "${_player.getHealth()} hp", 10, 30);
-         TextUtil.drawStringFloatRight(context, _formatScore(_player.getScore()), GameHost.width - 10, 30);
+         if (!_gameOver) {
+            TextUtil.drawString(context, "${_player.getHealth()} hp", 10, 30);
+            TextUtil.drawStringFloatRight(context, _formatScore(_player.getScore()), GameHost.width - 10, 30);
+         }
       } else {
          _play.render(context);
       }
@@ -118,18 +126,23 @@ class Level {
                _enemies.remove(enemy);
             });
             _player.update(elapsed);
+            if (_player.isRemoved()) {
+               _gameOver = true;
+               setPause(true);
+            }
          }
       } else {
+
       }
    }
 
    void reset() {
-      _playing = _pause = false;
+      _playing = _pause = _gameOver = false;
       setPause(false);
       _play.setVisible(true);
 
       _player.setPosition(new Point((GameHost.width / 2), (GameHost.height - _player.getHeight()) - 50.0));
-      _player.setScore(0);
+      _player.reset();
       _enemies.clear();
       _time = 0.0;
    }
@@ -138,11 +151,12 @@ class Level {
       setPause(false);
       _play.setVisible(false);
       _playing = true;
+      _gameOver = false;
    }
 
    void setPause(bool pause) {
       _pause = pause;
-      _resume.setVisible(pause);
+      if (!_gameOver) _resume.setVisible(pause);
       _menu.setVisible(pause);
    }
 

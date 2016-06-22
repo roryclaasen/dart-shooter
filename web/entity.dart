@@ -142,6 +142,10 @@ class Entity {
 		return _health;
 	}
 
+	void resetHealth() {
+		_health = _maxHealth;
+	}
+
 	void remove() {
 		_remove = true;
 	}
@@ -175,15 +179,18 @@ class Player extends Entity {
 
 	void update(final double elapsed) {
 		super.update(elapsed);
-		double pVelocity = velocity * 1.25;
-		if (Keyboard.isPressed(KeyCode.A)) _x -= pVelocity * elapsed;
-		if (Keyboard.isPressed(KeyCode.D)) _x += pVelocity * elapsed;
-		if (Keyboard.isPressed(KeyCode.W)) _y -= pVelocity * elapsed;
-		if (Keyboard.isPressed(KeyCode.S)) _y += pVelocity * elapsed;
-		if (getBounds().left < 0) _x = getBounds().width / 2;
-		if (getBounds().right > GameHost.width) _x = 0.0 + GameHost.width - (getBounds().width / 2);
-		if (getBounds().top < 40) _y = (getBounds().height / 2) + 40.0; // To not get to close to the text at the top
-		if (getBounds().bottom > GameHost.height) _y = GameHost.height - (getBounds().height / 2);
+		if(!_remove) {
+			double pVelocity = velocity * 1.25;
+			if (Keyboard.isPressed(KeyCode.A)) _x -= pVelocity * elapsed;
+			if (Keyboard.isPressed(KeyCode.D)) _x += pVelocity * elapsed;
+			if (Keyboard.isPressed(KeyCode.W)) _y -= pVelocity * elapsed;
+			if (Keyboard.isPressed(KeyCode.S)) _y += pVelocity * elapsed;
+			if (getBounds().left < 0) _x = getBounds().width / 2;
+			if (getBounds().right > GameHost.width) _x = 0.0 + GameHost.width - (getBounds().width / 2);
+			if (getBounds().top < 40) _y = (getBounds().height / 2) + 40.0; // To not get to close to the text at the top
+			if (getBounds().bottom > GameHost.height) _y = GameHost.height - (getBounds().height / 2);
+		}
+		if (_health <= 0) remove();
 	}
 
 	void setScore(int score) {
@@ -196,6 +203,12 @@ class Player extends Entity {
 
 	int getScore() {
 		return _score;
+	}
+
+	void reset() {
+		_score = 0;
+		_remove = false;
+		resetHealth();
 	}
 }
 
