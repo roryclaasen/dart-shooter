@@ -21,11 +21,23 @@ class AudioMaster {
 	static Sound sfx_shieldDown;
 	static Sound sfx_lose;
 	static Sound sfx_smash;
+	static Sound sfx_laser2;
+
+	static bool _muted = false;
 
 	AudioMaster() {
 		sfx_shieldDown = new Sound("sfx_shieldDown.ogg");
 		sfx_lose = new Sound("sfx_lose.ogg");
 		sfx_smash = new Sound("sfx_smash.ogg");
+		sfx_laser2 = new Sound("sfx_laser2.ogg");
+	}
+
+	static void setMuted(bool mute) {
+		_muted = mute;
+	}
+
+	static bool isMuted() {
+		return _muted;
 	}
 }
 
@@ -35,6 +47,7 @@ class Sound {
 	Sound(this._file);
 
 	void play() {
+		if (AudioMaster.isMuted()) return;
 		HttpRequest.request("assets/" + _file, responseType: "arraybuffer").then((HttpRequest request) {
 			return AudioMaster.audioContext.decodeAudioData(request.response).then((AudioBuffer buffer) {
 				AudioBufferSourceNode  source = AudioMaster.audioContext.createBufferSource();

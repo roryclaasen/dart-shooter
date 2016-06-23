@@ -263,7 +263,7 @@ class Projectile extends Entity {
 			x = parent.getPosition().x;
 			y = parent.getPosition().y;
 		}
-
+		AudioMaster.sfx_laser2.play();
 		switch (type) {
 			case 'player':
 			return new Projectile(1, "laserBlue01.png", ["laserBlue09.png", "laserBlue11.png", "laserBlue10.png"], x:x, y:y);

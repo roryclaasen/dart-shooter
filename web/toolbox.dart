@@ -91,26 +91,31 @@ class TextUtil {
       ..shadowColor = 'rgba(255, 255, 255,  1)';
    }
 
-   static void drawString(CanvasRenderingContext2D context, String text, int x, int y) {
+   static void drawString(CanvasRenderingContext2D context, String text, int x, int y, {bool useFontAwesome}) {
       _initContext(context);
+      if (useFontAwesome != null) {
+         if (useFontAwesome) {
+            context.font = "20pt FontAwesome";
+         }
+      }
       _addShaddow(context);
       context.fillText(text, x, y);
       _removeShaddow(context);
    }
 
-   static void drawCenteredString(CanvasRenderingContext2D context, String text, int x, int y) {
-      drawStringAligned(context, text, x, y, "center");
+   static void drawCenteredString(CanvasRenderingContext2D context, String text, int x, int y, {bool useFontAwesome}) {
+      drawStringAligned(context, text, x, y, "center", useFontAwesome:useFontAwesome);
    }
 
-   static void drawStringAligned(CanvasRenderingContext2D context, String text, int x, int y, String align) {
+   static void drawStringAligned(CanvasRenderingContext2D context, String text, int x, int y, String align, {bool useFontAwesome}) {
       context.textAlign = align;
-      drawString(context, text, x, y);
+      drawString(context, text, x, y, useFontAwesome:useFontAwesome);
       context.textAlign = "left";
    }
 
-   static void drawStringFloatRight(CanvasRenderingContext2D context, String text, int x, int y) {
+   static void drawStringFloatRight(CanvasRenderingContext2D context, String text, int x, int y, {bool useFontAwesome}) {
       _initContext(context);
-      drawString(context, text, (x - context.measureText(text).width).round(), y);
+      drawString(context, text, (x - context.measureText(text).width).round(), y, useFontAwesome:useFontAwesome);
    }
 
    static void wrapText(context, text, x, y, maxWidth, lineHeight) {

@@ -68,10 +68,20 @@ class GUIElement {
 class GUIButton extends GUIElement {
 	Texture _texture, _hover, _active;
 	final String detail;
+	bool _useFontAwesome = false;
 
-	GUIButton(int x, int y, this.detail, final CanvasElement canvas) : super(x, y){
+	GUIButton(int x, int y, this.detail, final CanvasElement canvas, {bool isSmall, bool fa}) : super(x, y) {
 		_texture = new Texture("buttonBlue.png");
 		_hover = new Texture("buttonRed.png");
+		if (isSmall != null) {
+			if (isSmall) {
+				_texture = new Texture("buttonBlueSmall.png");
+				_hover = new Texture("buttonRedSmall.png");
+			}
+		}
+		if (fa != null) {
+			if (fa) _useFontAwesome = true;
+		}
 		_active = _texture;
 		_texture.getTexture().onLoad.listen((e) {
 			_width = _active.getTexture().width;
@@ -101,14 +111,47 @@ class GUIButton extends GUIElement {
 	void render(CanvasRenderingContext2D context) {
 		if (isVisible()) {
 			if (_active != null) context.drawImage(_active.getTexture(), getBounds().left, getBounds().top);
-			TextUtil.dark();
-			TextUtil.drawCenteredString(context, detail, _x, _y + (_height / 4).round() - 2);
-			TextUtil.light();
+			if (detail != null) {
+				TextUtil.dark();
+				TextUtil.drawCenteredString(context, detail, _x, _y + (_height / 4).round() - 1, useFontAwesome:_useFontAwesome);
+				TextUtil.light();
+			}
 		}
 	}
 
 	Rectangle getBounds() {
 		return new Rectangle(_x - (_width / 2), _y - (_height / 2), _width, _height);
+	}
+}
+
+class GUIToggleButton extends GUIButton {
+	String _on, _off, _current;
+	GUIToggleButton(int x, int y, String detail, final CanvasElement canvas, this._on, this._off,{bool isSmall, bool fa}) : super(x, y, detail,canvas, isSmall:isSmall, fa:fa) {
+		_current = _on;
+	}
+
+	void toggle() {
+		if (isOn()) _current = _off;
+		else _current = _on;
+	}
+
+	String getCurrent() {
+		return _current;
+	}
+
+	bool isOn() {
+		return _current == _on;
+	}
+
+	void render(CanvasRenderingContext2D context) {
+		if (isVisible()) {
+			if (_active != null) context.drawImage(_active.getTexture(), getBounds().left, getBounds().top);
+			if (detail != null) {
+				TextUtil.dark();
+				TextUtil.drawCenteredString(context, _current, _x, _y + (_height / 4).round() - 2, useFontAwesome:_useFontAwesome);
+				TextUtil.light();
+			}
+		}
 	}
 }
 

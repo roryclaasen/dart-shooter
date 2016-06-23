@@ -18,6 +18,7 @@ part of shooter;
 class Level {
    var _guiButtonClick = new EventStreamProvider<CustomEvent>("guiButtonClick");
    GUIButton _play, _resume, _menu;
+   GUIButton _sfx;
 
    Player _player;
 
@@ -39,14 +40,20 @@ class Level {
       _play = new GUIButton((GameHost.width / 2).round(), (GameHost.height / 2).round(), "PLAY", canvas);
       _resume = new GUIButton((GameHost.width / 2).round(), (GameHost.height / 2).round() - 40, "RESUME", canvas);
       _menu = new GUIButton((GameHost.width / 2).round(), (GameHost.height / 2).round() + 40, "MENU", canvas);
+      _sfx = new GUIToggleButton(30, GameHost.height - 30, "sound", canvas, "\uf028", "\uf026", isSmall:true, fa:true);
 
       _player = new Player(this);
 
       _guiButtonClick.forTarget(window).listen((e) {
-         AudioMaster.sfx_shieldDown.play();
          if (e.detail == _play.detail) play();
          if (e.detail == _resume.detail) setPause(false);
          if (e.detail == _menu.detail) reset();
+         if (e.detail == _sfx.detail) {
+            GUIToggleButton sfx = _sfx;
+            sfx.toggle();
+            AudioMaster.setMuted(!sfx.isOn());
+         }
+         AudioMaster.sfx_shieldDown.play();
       });
       window.onClick.listen((e) {
          if (e.target.id != canvas.id) {
@@ -76,6 +83,7 @@ class Level {
                TextUtil.drawCenteredString(context, "PAUSE", (GameHost.width / 2).round(), (GameHost.height / 3).round());
                _resume.render(context);
             }
+            _sfx.render(context);
             _menu.render(context);
          }
          if (!_gameOver) {
@@ -84,6 +92,7 @@ class Level {
          }
       } else {
          _play.render(context);
+         _sfx.render(context);
          TextUtil.drawStringFloatRight(context, "${GameData.version}", GameHost.width - 10, 30);
       }
    }
@@ -129,16 +138,18 @@ class Level {
             toRemove.clear();
             _projectile.forEach((projectile) {
                projectile.update(elapsed);
-               Entity hit = projectile.collideWith(_enemies, doSmall: true);
-               if (hit != null) {
-                  projectile.hit(hit);
-                  if (hit is Enemy) {
-                     Enemy enemy = hit;
-                     enemy.destroyEnemy(sound:true);
-                     _player.addScore(100 + random.nextInt(100));
-                  } else if (hit is Player) {
-                     Player player = hit;
-                     player.damage(projectile.getDamage());
+               if (projectile.getPosition().y > 0){
+                  Entity hit = projectile.collideWith(_enemies, doSmall: true);
+                  if (hit != null) {
+                     projectile.hit(hit);
+                     if (hit is Enemy) {
+                        Enemy enemy = hit;
+                        enemy.destroyEnemy(sound:true);
+                        _player.addScore(100 + random.nextInt(100));
+                     } else if (hit is Player) {
+                        Player player = hit;
+                        player.damage(projectile.getDamage());
+                     }
                   }
                }
                if (projectile.isRemoved()) toRemove.add(projectile);
