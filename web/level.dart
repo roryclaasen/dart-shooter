@@ -22,6 +22,7 @@ class Level {
    Player _player;
 
    List<Enemy> _enemies = new List<Enemy>();
+   List<Projectile> _projectile = new List<Projectile>();
 
    bool _playing = false;
    bool _pause = false;
@@ -39,7 +40,7 @@ class Level {
       _resume = new GUIButton((GameHost.width / 2).round(), (GameHost.height / 2).round() - 40, "RESUME", canvas);
       _menu = new GUIButton((GameHost.width / 2).round(), (GameHost.height / 2).round() + 40, "MENU", canvas);
 
-      _player = new Player();
+      _player = new Player(this);
 
       _guiButtonClick.forTarget(window).listen((e) {
          AudioMaster.sfx_shieldDown.play();
@@ -57,6 +58,9 @@ class Level {
    void render(CanvasRenderingContext2D context) {
       _enemies.forEach((enemy) {
          enemy.render(context);
+      });
+      _projectile.forEach((projectile) {
+         projectile.render(context);
       });
       if (!_player.isRemoved()) _player.render(context);
       if (_playing) {
@@ -108,25 +112,46 @@ class Level {
          }
          if(!_pause || _gameOver) {
             _time += elapsed;
-            if (_time >= 1.0) {
-               _player.addScore(1);
-               _genEnemy();
-               _time = 0.0;
-            }
-            List<Enemy> toRemove = new List<Enemy>();
+            // Enemy
+            List<Entity> toRemove = new List<Entity>();
             _enemies.forEach((enemy) {
                enemy.update(elapsed);
-               if (enemy.collide(_player, point: true)) {
+               if (enemy.collide(_player, doSmall: true)) {
                   _player.damage(1);
-                  AudioMaster.sfx_smash.play();
-                  enemy.destroyEnemy();
+                  enemy.destroyEnemy(sound:true);
                }
                if (enemy.isRemoved()) toRemove.add(enemy);
             });
             toRemove.forEach((enemy) {
                _enemies.remove(enemy);
             });
+            // Projectile
+            toRemove.clear();
+            _projectile.forEach((projectile) {
+               projectile.update(elapsed);
+               Entity hit = projectile.collideWith(_enemies, doSmall: true);
+               if (hit != null) {
+                  projectile.hit(hit);
+                  if (hit is Enemy) {
+                     Enemy enemy = hit;
+                     enemy.destroyEnemy(sound:true);
+                  } else if (hit is Player) {
+                     Player player = hit;
+                     player.damage(projectile.getDamage());
+                  }
+               }
+               if (projectile.isRemoved()) toRemove.add(projectile);
+            });
+            toRemove.forEach((projectile) {
+               _projectile.remove(projectile);
+            });
+            // Everything else
             if (!_gameOver) {
+               if (_time >= 1.0) {
+                  _player.addScore(1);
+                  _genEnemy();
+                  _time = 0.0;
+               }
                _player.update(elapsed);
                if (_player.isRemoved()) {
                   _gameOver = true;
@@ -140,6 +165,16 @@ class Level {
       }
    }
 
+   void add(Entity entity) {
+      if (entity is Enemy) {
+         _enemies.add(entity);
+      } else if (entity is Projectile){
+         _projectile.add(entity);
+      } else {
+         print("Unknown entity type!");
+      }
+   }
+
    void reset() {
       _playing = _pause = _gameOver = false;
       setPause(false);
@@ -148,6 +183,7 @@ class Level {
       _player.setPosition(new Point((GameHost.width / 2), (GameHost.height - _player.getHeight()) - 50.0));
       _player.reset();
       _enemies.clear();
+      _projectile.clear();
       _time = 0.0;
    }
 

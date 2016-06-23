@@ -31,7 +31,15 @@ class Entity {
 	bool _remove = false;
 
 	Entity(this._x, this._y, {String texturePath, int width, int height}) {
-		if (texturePath != null) _texture = new Texture(texturePath);
+		if (_x == null) _x = 0.0;
+		if (_y == null) _y = 0.0;
+		if (texturePath != null) {
+			_texture = new Texture(texturePath);
+			_texture.getTexture().onLoad.listen((e) {
+				_width = width = _texture.getTexture().width;
+				_height = height = _texture.getTexture().height;
+			});
+		}
 		if (width == null) _width = 32;
 		else _width = width;
 		if (height == null) _height = 32;
@@ -170,11 +178,102 @@ class Entity {
 		}
 		return getBounds().intersects(entity.getBounds());
 	}
+
+	Entity collideWith(List<Enemy> list, {bool point, bool doSmall}) {
+		for (Enemy enemy in list) {
+			if (enemy == null) continue;
+			if (collide(enemy, point:point,doSmall:doSmall)) return enemy;
+		}
+		return null;
+	}
+}
+
+class Projectile extends Entity {
+	int _damageWhenHit = 0;
+	bool _hit = false;
+	double _hitTime = 0.0, _hitWaitTime = 0.75;
+	List<Entity> _particle = new List<Entity>();
+	List<String> _hitTextures = new List<String>();
+
+	Projectile(this._damageWhenHit, String texture, this._hitTextures, {double x, double y}) : super(x, y, texturePath: texture);
+
+	void update(final double elapsed) {
+		if (!_hit) {
+			_y -= elapsed * (velocity * 4);
+		} else {
+			_hitTime += elapsed;
+			_particle.forEach((particle) {
+				particle.update(elapsed);
+			});
+			if (_hitTime >= _hitWaitTime) remove();
+		}
+	}
+
+	void render(CanvasRenderingContext2D context) {
+		if (!_hit) {
+			super.render(context);
+		} else {
+			_particle.forEach((particle) {
+				particle.render(context);
+			});
+		}
+	}
+
+	void hit(Entity entity) {
+		if (entity != null && !_hit) {
+			_hit = true;
+
+			if (_hitTextures != null) {
+				if (_hitTextures.length > 0) {
+					for (int i = 0; i < 2; i++) {
+						_spawnHit(entity);
+					}
+				} else remove();
+			} else remove();
+		}
+	}
+
+	void _spawnHit(Entity entity) {
+		double x = entity.getPosition().x + (entity.getWidth() / 4) + random.nextInt((entity.getWidth() / 2).round());
+		double y = entity.getPosition().y + (entity.getHeight() / 4) + random.nextInt((entity.getHeight() / 2).round());
+		int textureIndex = random.nextInt(_hitTextures.length);
+		_particle.add(new Entity(x, y, texturePath: _hitTextures[textureIndex]));
+	}
+
+	void setDamage(int damage) {
+		_damageWhenHit = damage;
+	}
+
+	int getDamage() {
+		return _damageWhenHit;
+	}
+
+	void remove() {
+		super.remove();
+		_particle.clear();
+	}
+
+	static Projectile CreateNew(String type, {Entity parent}) {
+		double x = 0.0, y = 0.0;
+		if (parent != null) {
+			x = parent.getPosition().x;
+			y = parent.getPosition().y;
+		}
+
+		switch (type) {
+			case 'player':
+			return new Projectile(1, "laserBlue01.png", /*["laserBlue09.png", "laserBlue11.png", "laserBlue10.png"]*/null, x:x, y:y);
+
+			default:
+			return null;
+		}
+	}
 }
 
 class Player extends Entity {
 	int _score = 0;
-	Player() : super(0.0, 0.0, width: 79, height: 55) {
+	Level _level;
+	Player(this._level) : super(0.0, 0.0, width: 79, height: 55) {
 		loadData("player.json");
 	}
 
@@ -186,6 +285,7 @@ class Player extends Entity {
 			if (Keyboard.isPressed(KeyCode.D) || Keyboard.isPressed(KeyCode.RIGHT)) _x += pVelocity * elapsed;
 			if (Keyboard.isPressed(KeyCode.W) || Keyboard.isPressed(KeyCode.UP)) _y -= pVelocity * elapsed;
 			if (Keyboard.isPressed(KeyCode.S) || Keyboard.isPressed(KeyCode.DOWN)) _y += pVelocity * elapsed;
+			if (Keyboard.isPressed(KeyCode.SPACE)) _level.add(Projectile.CreateNew("player", parent:this));
 			if (getBounds().left < 0) _x = getBounds().width / 2;
 			if (getBounds().right > GameHost.width) _x = 0.0 + GameHost.width - (getBounds().width / 2);
 			if (getBounds().top < 40) _y = (getBounds().height / 2) + 40.0; // To not get to close to the text at the top
@@ -231,10 +331,10 @@ class Enemy extends Entity {
 
 	void update(final double elapsed) {
 		super.update(elapsed);
-		if (_y +  _texture.getTexture().height > GameHost.height) destroyEnemy();
+		if (_y > GameHost.height + _texture.getTexture().height) destroyEnemy();
 	}
 
-	void destroyEnemy() {
+	void destroyEnemy({bool sound}) {
 		// TODO Break/Death animation
 		remove();
 	}
@@ -251,5 +351,12 @@ class Meteor extends Enemy {
 	void update(final double elapsed) {
 		super.update(elapsed);
 		_y += elapsed * (velocity * _speedMul);
+	}
+
+	void destroyEnemy({bool sound}) {
+		super.destroyEnemy(sound:sound);
+		if (sound != null) {
+			if (sound) AudioMaster.sfx_smash.play();
+		}
 	}
 }
