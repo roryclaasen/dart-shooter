@@ -207,15 +207,19 @@ class Projectile extends Entity {
 			});
 			if (_hitTime >= _hitWaitTime) remove();
 		}
+		if (_y > GameHost.height + _texture.getTexture().height) remove();
+		if (_y < 0.0 - _texture.getTexture().height) remove();
 	}
 
 	void render(CanvasRenderingContext2D context) {
 		if (!_hit) {
 			super.render(context);
 		} else {
+			context.globalAlpha = 1 - (1 * _hitTime);
 			_particle.forEach((particle) {
 				particle.render(context);
 			});
+			context.globalAlpha = 1;
 		}
 	}
 
@@ -234,8 +238,8 @@ class Projectile extends Entity {
 	}
 
 	void _spawnHit(Entity entity) {
-		double x = entity.getPosition().x + (entity.getWidth() / 4) + random.nextInt((entity.getWidth() / 2).round());
-		double y = entity.getPosition().y + (entity.getHeight() / 4) + random.nextInt((entity.getHeight() / 2).round());
+		double x = entity.getPosition().x + random.nextInt(entity.getWidth());
+		double y = entity.getPosition().y + random.nextInt(entity.getHeight());
 		int textureIndex = random.nextInt(_hitTextures.length);
 		_particle.add(new Entity(x, y, texturePath: _hitTextures[textureIndex]));
 	}
@@ -262,7 +266,7 @@ class Projectile extends Entity {
 
 		switch (type) {
 			case 'player':
-			return new Projectile(1, "laserBlue01.png", /*["laserBlue09.png", "laserBlue11.png", "laserBlue10.png"]*/null, x:x, y:y);
+			return new Projectile(1, "laserBlue01.png", ["laserBlue09.png", "laserBlue11.png", "laserBlue10.png"], x:x, y:y);
 
 			default:
 			return null;
@@ -272,6 +276,7 @@ class Projectile extends Entity {
 
 class Player extends Entity {
 	int _score = 0;
+	double _coolDownTime = 0.5, _coolDown = 0.0;
 	Level _level;
 	Player(this._level) : super(0.0, 0.0, width: 79, height: 55) {
 		loadData("player.json");
@@ -280,12 +285,17 @@ class Player extends Entity {
 	void update(final double elapsed) {
 		super.update(elapsed);
 		if(!_remove) {
+			if (_coolDown > 0.0) _coolDown += elapsed;
+			if (_coolDown >= _coolDownTime) _coolDown = 0.0;
 			double pVelocity = velocity * 1.25;
 			if (Keyboard.isPressed(KeyCode.A) || Keyboard.isPressed(KeyCode.LEFT)) _x -= pVelocity * elapsed;
 			if (Keyboard.isPressed(KeyCode.D) || Keyboard.isPressed(KeyCode.RIGHT)) _x += pVelocity * elapsed;
 			if (Keyboard.isPressed(KeyCode.W) || Keyboard.isPressed(KeyCode.UP)) _y -= pVelocity * elapsed;
 			if (Keyboard.isPressed(KeyCode.S) || Keyboard.isPressed(KeyCode.DOWN)) _y += pVelocity * elapsed;
-			if (Keyboard.isPressed(KeyCode.SPACE)) _level.add(Projectile.CreateNew("player", parent:this));
+			if (Keyboard.isPressed(KeyCode.SPACE) && _coolDown == 0.0) {
+				_coolDown += elapsed;
+				_level.add(Projectile.CreateNew("player", parent:this));
+			}
 			if (getBounds().left < 0) _x = getBounds().width / 2;
 			if (getBounds().right > GameHost.width) _x = 0.0 + GameHost.width - (getBounds().width / 2);
 			if (getBounds().top < 40) _y = (getBounds().height / 2) + 40.0; // To not get to close to the text at the top
@@ -308,6 +318,7 @@ class Player extends Entity {
 
 	void reset() {
 		_score = 0;
+		_coolDown = 0.0;
 		_remove = false;
 		resetHealth();
 	}
