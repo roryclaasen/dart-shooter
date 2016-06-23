@@ -227,6 +227,16 @@ class Enemy extends Entity {
 		if (y == null) y = 0.0;
 		_y = y;
 	}
+	
+	void update(final double elapsed) {
+		super.update(elapsed);
+		if (enemy.getPosition().y +  _texture.getTexture().height > GameHost.height) destroyEnemy();
+	}
+	
+	void destroyEnemy() {
+		// TODO Break/Death animation
+		enemy.remove();
+	}
 }
 
 class Meteor extends Enemy {
