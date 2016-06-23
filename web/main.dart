@@ -47,7 +47,7 @@ class GameData {
    static void loadVersion() {
       HttpRequest.getString('../pubspec.yaml').then((String yaml){
          YamlMap map = loadYaml(yaml);
-         version = "debug." + map['version'];
+         version = "dev." + map['version'];
       }).catchError((Error error) {
          HttpRequest.getString('data.yaml').then((String yaml){
             YamlMap map = loadYaml(yaml);
