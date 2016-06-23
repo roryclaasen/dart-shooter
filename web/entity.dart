@@ -181,10 +181,10 @@ class Player extends Entity {
 		super.update(elapsed);
 		if(!_remove) {
 			double pVelocity = velocity * 1.25;
-			if (Keyboard.isPressed(KeyCode.A)) _x -= pVelocity * elapsed;
-			if (Keyboard.isPressed(KeyCode.D)) _x += pVelocity * elapsed;
-			if (Keyboard.isPressed(KeyCode.W)) _y -= pVelocity * elapsed;
-			if (Keyboard.isPressed(KeyCode.S)) _y += pVelocity * elapsed;
+			if (Keyboard.isPressed(KeyCode.A) || Keyboard.isPressed(KeyCode.LEFT)) _x -= pVelocity * elapsed;
+			if (Keyboard.isPressed(KeyCode.D) || Keyboard.isPressed(KeyCode.RIGHT)) _x += pVelocity * elapsed;
+			if (Keyboard.isPressed(KeyCode.W) || Keyboard.isPressed(KeyCode.UP)) _y -= pVelocity * elapsed;
+			if (Keyboard.isPressed(KeyCode.S) || Keyboard.isPressed(KeyCode.DOWN)) _y += pVelocity * elapsed;
 			if (getBounds().left < 0) _x = getBounds().width / 2;
 			if (getBounds().right > GameHost.width) _x = 0.0 + GameHost.width - (getBounds().width / 2);
 			if (getBounds().top < 40) _y = (getBounds().height / 2) + 40.0; // To not get to close to the text at the top
