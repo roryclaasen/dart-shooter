@@ -119,9 +119,8 @@ class Level {
                if (enemy.collide(_player, point: true)) {
                   _player.damage(1);
                   AudioMaster.sfx_smash.play();
-                  enemy.remove();
+                  enemy.destroy();
                }
-               if (enemy.getPosition().y > GameHost.height) enemy.remove();
                if (enemy.isRemoved()) toRemove.add(enemy);
             });
             toRemove.forEach((enemy) {
