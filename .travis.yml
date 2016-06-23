@@ -8,4 +8,5 @@ env:
 script:
    - pub build --mode=release
 after_success:
+   - python ./scripts/write-data-after-build.py
    - bash ./scripts/deploy-to-gh-pages.sh
