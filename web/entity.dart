@@ -230,7 +230,7 @@ class Enemy extends Entity {
 	
 	void update(final double elapsed) {
 		super.update(elapsed);
-		if (enemy.getPosition().y +  _texture.getTexture().height > GameHost.height) destroyEnemy();
+		if (_y +  _texture.getTexture().height > GameHost.height) destroyEnemy();
 	}
 	
 	void destroyEnemy() {
