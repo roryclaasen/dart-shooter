@@ -111,3 +111,56 @@ class GUIButton extends GUIElement {
 		return new Rectangle(_x - (_width / 2), _y - (_height / 2), _width, _height);
 	}
 }
+
+class Background extends GUIElement {
+	String _baseImage;
+	Texture _background, _stars;
+	int _imgWidth = 0, _imgHeight = 0;
+	bool _moving = true;
+	double _backgroundPos = 0.0, _starsPos = 0.0;
+	int _velocity = 100;
+
+	Background(this._baseImage) : super(0, 0, width:GameHost.width, height:GameHost.height) {
+		_background = new Texture(_baseImage);
+		_background.getTexture().onLoad.listen((e) {
+			_imgWidth = _background.getTexture().width;
+			_imgHeight = _background.getTexture().height;
+		});
+		_stars = new Texture("stars.png");
+	}
+
+	void render(CanvasRenderingContext2D context) {
+		if (_background.getTexture() == null) return;
+		try {
+			for(int x = 0; x < (_width / _imgWidth).ceil(); x++) {
+				for(int y = 0; y < (_height / _imgHeight).ceil() + 1; y++) {
+					context.drawImage(_background.getTexture(), x * _imgWidth, (y * _imgHeight) + _backgroundPos.round());
+				}
+			}
+			for(int x = 0; x < (_width / _imgWidth).ceil(); x++) {
+				for(int y = 0; y < (_height / _imgHeight).ceil() + 1; y++) {
+					context.drawImage(_stars.getTexture(), x * _imgWidth, (y * _imgHeight) + _starsPos.round());
+				}
+			}
+		} catch(exception) {}
+	}
+
+	void update(final double elapsed) {
+		if (_background.getTexture() == null) return;
+		if (_moving) {
+			_backgroundPos += elapsed * (_velocity / 1.75);
+			if (_backgroundPos >= 0) _backgroundPos = 0.0 -_imgHeight;
+
+			_starsPos += elapsed * _velocity;
+			if (_starsPos >= 0) _starsPos = 0.0 -_imgHeight;
+		}
+	}
+
+	bool isMoving() {
+		return _moving;
+	}
+
+	void setIsMoving(bool moving) {
+		_moving = moving;
+	}
+}

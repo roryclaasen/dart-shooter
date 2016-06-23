@@ -9,10 +9,13 @@ with open(path + 'pubspec.yaml', 'r') as f:
 	for line in f:
         	if line.startswith(tuple(toKeep)):
         		data += line
+				print(line)
 
+print("Saving new data file")
 with open(path + 'build/web/data.yaml', 'w') as outfile:
 	outfile.write(data)
-	
+
+print("Creating gh-pages readme")
 with open(path + 'build/web/README.md', 'w') as outfile:
 	outfile.write('# Dart Shooter\n\n')
 	outfile.write('This branch gets updated automatically!\n\n')

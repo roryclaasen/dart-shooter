@@ -58,7 +58,7 @@ class Level {
       _enemies.forEach((enemy) {
          enemy.render(context);
       });
-      _player.render(context);
+      if (!_player.isRemoved()) _player.render(context);
       if (_playing) {
          if (_pause) {
             context..fillStyle = "rgba(0, 0, 0, 0.25)"
@@ -106,7 +106,7 @@ class Level {
          if (Keyboard.isPressed(KeyCode.ESC)) {
             setPause(true);
          }
-         if(!_pause) {
+         if(!_pause || _gameOver) {
             _time += elapsed;
             if (_time >= 1.0) {
                _player.addScore(1);
@@ -126,11 +126,13 @@ class Level {
             toRemove.forEach((enemy) {
                _enemies.remove(enemy);
             });
-            _player.update(elapsed);
-            if (_player.isRemoved()) {
-               _gameOver = true;
-               AudioMaster.sfx_lose.play();
-               setPause(true);
+            if (!_gameOver) {
+               _player.update(elapsed);
+               if (_player.isRemoved()) {
+                  _gameOver = true;
+                  AudioMaster.sfx_lose.play();
+                  setPause(true);
+               }
             }
          }
       } else {
@@ -160,6 +162,10 @@ class Level {
       _pause = pause;
       if (!_gameOver) _resume.setVisible(pause);
       _menu.setVisible(pause);
+      if (GameHost.getBackground() != null) {
+         GameHost.getBackground().setIsMoving(!pause);
+         if (_gameOver) GameHost.getBackground().setIsMoving(true);
+      }
    }
 
    void _genEnemy() {
@@ -168,5 +174,9 @@ class Level {
 
    bool isPaused() {
       return _pause;
+   }
+
+   bool isOver() {
+      return _gameOver;
    }
 }

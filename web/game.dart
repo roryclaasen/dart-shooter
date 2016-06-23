@@ -21,11 +21,11 @@ class GameHost {
    final Keyboard keyboard = new Keyboard();
    final AudioMaster audio = new AudioMaster();
 
+   static Background _background;
+
    int _lastTimestamp = 0;
-   int _backgroundPos = 0;
 
    Level _level;
-   Texture _background;
 
    static int width, height;
 
@@ -33,9 +33,9 @@ class GameHost {
       width = _canvas.width;
       height = _canvas.height;
 
-      _background = new Texture("background.png");
       _level = new Level(_canvas);
 
+      _background = new Background("background.png");
    }
 
    run() {
@@ -57,24 +57,16 @@ class GameHost {
    }
 
    void _update(final double elapsed) {
+      _background.update(elapsed);
       _level.update(elapsed);
    }
 
    void _render() {
-      _drawBackground(!_level.isPaused());
+      _background.render(_context);
       _level.render(_context);
    }
 
-   void _drawBackground(bool moving) {
-      ImageElement image = _background.getTexture();
-      if (moving) {
-         _backgroundPos++;
-         if (_backgroundPos >= 0) _backgroundPos = -image.height;
-      }
-      for(int x = 0; x < 2; x++) {
-         for(int y = 0; y < 5; y++) {
-            _context.drawImage(_background.getTexture(), x * image.width, (y * image.height) + _backgroundPos);
-         }
-      }
+   static Background getBackground(){
+      return _background;
    }
 }

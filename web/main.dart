@@ -34,10 +34,10 @@ part 'level.dart';
 part 'game.dart';
 
 void main() {
+   GameData.loadVersion();
    final CanvasElement canvas = querySelector(GameData.canvasIdentifier);
    canvas.focus();
    scheduleMicrotask(new GameHost(canvas, canvas.getContext('2d')).run);
-   GameData.loadVersion();
 }
 
 class GameData {
@@ -45,13 +45,15 @@ class GameData {
    static String version = "unknown";
 
    static void loadVersion() {
-      HttpRequest.getString('../pubspec.yaml').then((String yaml){
+      HttpRequest.getString('data.yaml').then((String yaml) {
          YamlMap map = loadYaml(yaml);
-         version = "dev." + map['version'];
+         version = map['version'];
       }).catchError((Error error) {
-         HttpRequest.getString('data.yaml').then((String yaml){
+         print("File not found. May be running locally");
+         HttpRequest.getString('../pubspec.yaml').then((String yaml) {
             YamlMap map = loadYaml(yaml);
             version = map['version'];
+            version = "dev." + map['version'];
          });
       });
    }
