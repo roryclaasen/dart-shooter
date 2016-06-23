@@ -119,7 +119,7 @@ class Level {
                if (enemy.collide(_player, point: true)) {
                   _player.damage(1);
                   AudioMaster.sfx_smash.play();
-                  enemy.destroy();
+                  enemy.destroyEnemy();
                }
                if (enemy.isRemoved()) toRemove.add(enemy);
             });
