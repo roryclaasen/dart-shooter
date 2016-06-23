@@ -7,9 +7,9 @@ data = ""
 toKeep = ['name:', 'description:', 'version:', 'homepage:']
 with open(path + 'pubspec.yaml', 'r') as f:
 	for line in f:
-        	if line.startswith(tuple(toKeep)):
-        		data += line
-				print(line)
+        if line.startswith(tuple(toKeep)):
+			data += line
+			print(line)
 
 print("Saving new data file")
 with open(path + 'build/web/data.yaml', 'w') as outfile:
