@@ -4,10 +4,12 @@ path = os.path.dirname(os.path.realpath(__file__))
 path = path[:-len("scripts")]
 
 data = ""
-with open(path + "pubspec.yaml) as f:
-    for line in f:
-        if line.startswith("name:") or line.startswith("description:") or line.startswith("version:") or line.startswith("homepage:"):
-        	data += line
+toKeep = ['name:', 'description:', 'version:', 'homepage:']
+with open(path + 'pubspec.yaml', 'r') as f:
+	for line in f:
+        	if line.startswith(tuple(toKeep)):
+        		data += line
+
 with open(path + 'build/web/data.yaml', 'w') as outfile:
 	outfile.write(data)
 	
