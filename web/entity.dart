@@ -235,7 +235,7 @@ class Enemy extends Entity {
 	
 	void destroyEnemy() {
 		// TODO Break/Death animation
-		enemy.remove();
+		remove();
 	}
 }
 
