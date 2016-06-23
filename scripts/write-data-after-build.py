@@ -7,7 +7,7 @@ data = ""
 toKeep = ['name:', 'description:', 'version:', 'homepage:']
 with open(path + 'pubspec.yaml', 'r') as f:
 	for line in f:
-        if line.startswith(tuple(toKeep)):
+		if line.startswith(tuple(toKeep)):
 			data += line
 			print(line)
 
