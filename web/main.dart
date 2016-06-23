@@ -42,7 +42,7 @@ void main() {
 
 class GameData {
    static const String canvasIdentifier = "#game-canvas";
-   static String version = "debug";
+   static String version = "unknown";
 
    static void loadVersion() {
       HttpRequest.getString('../pubspec.yaml').then((String yaml){
