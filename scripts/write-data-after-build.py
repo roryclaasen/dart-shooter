@@ -11,7 +11,7 @@ with open(path + 'pubspec.yaml', 'r') as f:
 			data += line
 			print(line)
 
-print("Saving new data file")
+print("Saving gh-pages data file")
 with open(path + 'build/web/data.yaml', 'w') as outfile:
 	outfile.write(data)
 
@@ -20,3 +20,9 @@ with open(path + 'build/web/README.md', 'w') as outfile:
 	outfile.write('# Dart Shooter\n\n')
 	outfile.write('This branch gets updated automatically!\n\n')
 	outfile.write('Any change or commit will be **overwritten**!\n')
+
+print("Creating gh-pages gitignore")
+with open(path + 'build/web/.gitignore', 'w') as outfile:
+	outfile.write('*.psd')
+	
+exit(0)
