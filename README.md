@@ -10,7 +10,7 @@ Please note that it is still a work in progress
 
 ## Credits
 - [Squares](http://www.dafont.com/squares2.font) by [Jovanny Lemonad](http://www.dafont.com/jovanny-lemonad.d1907)
-- Textures by [Kenney](http://www.kenney.nl/)
+- Textures and Sounds by [Kenney](http://www.kenney.nl/)
 
 ```
 Copyright 2016 Rory Claasen
