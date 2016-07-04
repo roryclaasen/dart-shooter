@@ -145,7 +145,8 @@ class Level {
                      if (hit is Enemy) {
                         Enemy enemy = hit;
                         enemy.destroyEnemy(sound:true);
-                        _player.addScore(100 + random.nextInt(100));
+                        int points = 200 - (_player.getPosition().y - enemy.getPosition().y).round();
+                        _player.addScore(50 + points);
                      } else if (hit is Player) {
                         Player player = hit;
                         player.damage(projectile.getDamage());
