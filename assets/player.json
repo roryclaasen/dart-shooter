@@ -1,0 +1,10 @@
+{
+	"texture": {
+		"files": ["player.png"],
+		"shadow": 10,
+		"damage": ["player_damage1.png", "player_damage2.png", "player_damage3.png"]
+	},
+	"entity": {
+		"health": 10
+	}
+}
