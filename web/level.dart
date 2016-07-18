@@ -192,6 +192,7 @@ class Level {
       _playing = _pause = _gameOver = false;
       setPause(false);
       _play.setVisible(true);
+      _sfx.setVisible(true);
 
       _player.setPosition(new Point((GameHost.width / 2), (GameHost.height - _player.getHeight()) - 50.0));
       _player.reset();
@@ -210,6 +211,7 @@ class Level {
    void setPause(bool pause) {
       _pause = pause;
       if (!_gameOver) _resume.setVisible(pause);
+      if (!_gameOver) _sfx.setVisible(pause);
       _menu.setVisible(pause);
       if (GameHost.getBackground() != null) {
          GameHost.getBackground().setIsMoving(!pause);
