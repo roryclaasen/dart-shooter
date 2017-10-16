@@ -2,8 +2,8 @@
 # Dart Shooter
 A Spaceship Shooter Game
 
-[![Travis](https://img.shields.io/travis/GOGO98901/dart-shooter.svg?style=flat-square)](https://travis-ci.org/GOGO98901/dart-shooter/branches)
-[![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg?style=flat-square)](https://raw.githubusercontent.com/GOGO98901/dart-shooter/master/LICENSE)
+[![Travis](https://img.shields.io/travis/roryclaasen/dart-shooter.svg?style=flat-square)](https://travis-ci.org/roryclaasen/dart-shooter/branches)
+[![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg?style=flat-square)](https://raw.githubusercontent.com/roryclaasen/dart-shooter/master/LICENSE)
 
 Play the game on [my website](http://roryclaasen.me/dart-shooter).<br>
 Please note that it is still a work in progress
